@@ -9,8 +9,11 @@ public:
     int numDistinct(string s, string t) {
         int N = t.size();
         int M = s.size();
+        
+        if(N > M) return 0;
+        
         vector<vector<ll>> dp = vector<vector<ll>>(2, vector<ll>(M + 1, 0));
-        for(int i = 0; i <= max(0, M - N); i++) {
+        for(int i = 0; i <= M - N; i++) {
             dp[0][i] = 1;
         }
         for(int i = 1; i<= N; i++) {

@@ -13,6 +13,7 @@ public:
         if(N > M) return 0;
         
         vector<vector<ll>> dp = vector<vector<ll>>(2, vector<ll>(M + 1, 0));
+        
         for(int i = 0; i <= M - N; i++) {
             dp[0][i] = 1;
         }

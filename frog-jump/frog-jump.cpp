@@ -19,7 +19,8 @@ public:
         }
         dp[1][0] = true;
         for(int i = 2; i < N; i++) {
-            for(int j = 0; j < i; j++) {
+            int start = lower_bound(begin(stones), end(stones), stones[i] / 2 - 1) - begin(stones);
+            for(int j = start; j < i; j++) {
                 for(int k = -1; k <= 1; k++) {
                     int prvPos = 2 * stones[j] - stones[i] + k;
                     if(index.count(prvPos) > 0) {

@@ -5,7 +5,7 @@
  *     ListNode *next;
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
- */
+ */ 
 class Solution {
     ListNode *goNTimes(ListNode *start, int n) {
         for(int i = 0; i < n; i++) {

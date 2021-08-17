@@ -29,19 +29,15 @@ public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
         vector<TreeNode*> path1 = getPath(root, p);
         vector<TreeNode*> path2 = getPath(root, q);
-        reverse(begin(path1), end(path1));
-        reverse(begin(path2), end(path2));
-        for(auto pp : path1) {
-            cout << pp->val << ' ';
+        int pos1 = path1.size() - 1;
+        int pos2 = path2.size() - 1;
+        while(pos1 >= 0 && pos2 >= 0) {
+            if(path1[pos1] != path2[pos2]) {
+                return path1[pos1 + 1];
+            }
+            pos1--, pos2--;
         }
-        cout << endl;
-        for(auto pp : path2) {
-            cout << pp->val << ' ';
-        }
-        int i;
-        for(i = 1; i < path1.size() && i < path2.size(); i++) {
-            if(path1[i] != path2[i]) break;
-        }
-        return path1[i - 1];
+        if(pos1 == -1) return path1[0];
+        return path2[0];
     }
 };

@@ -6,15 +6,15 @@ public:
         match['}'] = '{';
         match[']'] = '[';
         
-        stack<char> stk;
+        vector<char> stk;
         for(char c : s) {
             if(c == '(' || c == '[' || c == '{') {
-                stk.push(c);
+                stk.push_back(c);
             } else {
-                if(stk.empty() || match[c] != stk.top()) return false;
-                stk.pop();
+                if(stk.size() == 0 || match[c] != stk.back()) return false;
+                stk.pop_back();
             }
         }
-        return stk.empty();
+        return stk.size() == 0;
     }
 };

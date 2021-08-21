@@ -11,7 +11,7 @@ public:
             dict[sorted].push_back(str);
         }
         vector<vector<string>> ret;
-        for(auto kv : dict) {
+        for(auto& kv : dict) {
             ret.push_back(kv.second);
         }
         return ret;

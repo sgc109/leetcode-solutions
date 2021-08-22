@@ -40,4 +40,4 @@ public:
         
         return newNodes[node->val];
     }
-};
+}; 

@@ -16,22 +16,24 @@ public:
         if(root == nullptr) {
             return ret;
         }
-        vector<TreeNode*> nodes;
-        nodes.push_back(root);
-        while(nodes.size() > 0) {
+        queue<pair<int, TreeNode*>> q;
+        q.push({0, root});
+        int level = 0;
+        while(!q.empty()) {
             vector<int> forPush;
-            vector<TreeNode*> nextNodes;
-            for(auto node : nodes) {
+            while(!q.empty() && q.front().first == level) {
+                auto node = q.front().second;
+                q.pop();
                 forPush.push_back(node->val);
                 if(node->left != nullptr) {
-                    nextNodes.push_back(node->left);
+                    q.push({level + 1, node->left});
                 }
                 if(node->right != nullptr) {
-                    nextNodes.push_back(node->right);
+                    q.push({level + 1, node->right});
                 }
             }
             ret.push_back(forPush);
-            nodes = nextNodes;
+            level++;
         }
         
         return ret;

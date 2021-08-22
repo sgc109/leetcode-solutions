@@ -9,26 +9,50 @@
  * };
  */
 class Solution {
+    ListNode* reverse(ListNode* root) {
+        if(root == nullptr
+          || root->next == nullptr) {
+            return root;
+        }
+        ListNode* prv = nullptr;
+        auto cur = root;
+        auto nxt = root->next;
+        while(nxt != nullptr) {
+            nxt = cur->next;
+            cur->next = prv;
+            prv = cur;
+            cur = nxt;
+        }
+        return prv;
+    }
 public:
     void reorderList(ListNode* head) {
-        vector<ListNode*> nodes;
-        ListNode* cur = head;
-        while(cur != nullptr) {
-            nodes.push_back(cur);
-            cur = cur->next;
-        }
-        int l = 0, r = nodes.size() - 1;
-        bool leftFirst = true;
-        while(l < r) {
-            if(leftFirst) {
-                nodes[l]->next = nodes[r];
-                ++l;
-            } else {
-                nodes[r]->next = nodes[l];
-                --r;
+        auto slow = head;
+        auto fast = head;
+        auto prevSlow = head;
+        while(fast != nullptr) {
+            prevSlow = slow;
+            slow = slow->next;
+            fast = fast->next;
+            if(fast != nullptr) {
+                fast = fast->next;
             }
-            leftFirst = !leftFirst;
         }
-        nodes[l]->next = nullptr;
+        prevSlow->next = nullptr;
+        
+        bool revTurn = false;
+        auto revHead = reverse(slow);
+        while(head != nullptr && revHead != nullptr) {
+            if(revTurn) {
+                auto backup = revHead->next;
+                revHead->next = head;
+                revHead = backup;
+            } else {
+                auto backup = head->next;
+                head->next = revHead;
+                head = backup;
+            }
+            revTurn = !revTurn;
+        }
     }
 };

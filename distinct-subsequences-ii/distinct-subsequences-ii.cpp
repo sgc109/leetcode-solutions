@@ -1,3 +1,7 @@
+/*
+dp[i][j]: s[i] 까지 고려했을 때, s[i] 포함 여부(j)에 따른 distinct 한 subsequence 의 수
+*/
+
 class Solution {
     const int MOD = 1e9 + 7;
     int dp[2][2];

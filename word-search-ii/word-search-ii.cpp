@@ -42,6 +42,7 @@ class Solution {
         
         board[r][c] = back;
     }
+    
 public:
     vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
         this->R = board.size();

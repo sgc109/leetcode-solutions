@@ -1,5 +1,5 @@
 class NumArray {
-    int nodeSum[90003] = {0, };
+    vector<int> nodeSum;
     int size;
     void updateTree(int idx, int diff) {
         int pos = idx + 1;
@@ -25,6 +25,7 @@ public:
         while(size < N) {
             size *= 2;
         }
+        nodeSum.resize(size * 2);
         for(int i = 0; i < nums.size(); ++i) {
             updateTree(i, nums[i]);
         }

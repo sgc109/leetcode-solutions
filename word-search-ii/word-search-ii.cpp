@@ -4,9 +4,6 @@ class Solution {
     vector<string> ans;
     vector<string> words;
     
-    int dy[4] = {0, -1, 1, 0};
-    int dx[4] = {-1, 0, 0, 1};
-    
     struct Node {
         Node* adj[26] = {0, };
         int strId = -1;
@@ -24,30 +21,26 @@ class Solution {
         }
     };
     
-    bool inRange(int r, int c) {
-        return 0 <= r && r < R && 0 <= c && c < C;
-    }
-    
-    int getHash(int r, int c) {
-        return r * 12 + c;
-    }
-    
-    void dfs(int ci, int cj, Node* node) {
-        if(node == 0) return;
-        char back = board[ci][cj];
-        board[ci][cj] = ' ';
-        if(node->strId != -1) {
-            ans.push_back(words[node->strId]);
-            node->strId = -1;
+    void dfs(int r, int c, Node* node) {
+        if(r < 0 || r >= R || c < 0 || c >= C || board[r][c] == '#') return;
+        
+        Node* next = node->adj[board[r][c] - 'a'];
+        if(next == 0) return;
+        
+        if(next->strId != -1) {
+            ans.push_back(words[next->strId]);
+            next->strId = -1;
         }
-        for(int i = 0; i < 4; ++i) {
-            int ni = ci + dy[i];
-            int nj = cj + dx[i];
-            if(!inRange(ni, nj) || board[ni][nj] == ' ') continue;
-            Node* nextNode = node->adj[board[ni][nj] - 'a'];
-            dfs(ni, nj, nextNode);
-        }
-        board[ci][cj] = back;
+        
+        char back = board[r][c];
+        board[r][c] = '#';
+        
+        dfs(r+1, c, next);
+        dfs(r-1, c, next);
+        dfs(r, c+1, next);
+        dfs(r, c-1, next);
+        
+        board[r][c] = back;
     }
 public:
     vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
@@ -62,7 +55,7 @@ public:
         
         for(int i = 0; i < R; ++i) {
             for(int j = 0; j < C; ++j) {
-                dfs(i, j, trie->adj[board[i][j] - 'a']);
+                dfs(i, j, trie);
             }
         }
         

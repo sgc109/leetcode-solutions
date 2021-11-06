@@ -1,12 +1,15 @@
 class Solution {
     const int MOD = 1e9 + 7;
-    int dp[2001][2];
+    int dp[2][2];
     int sum[26];
     int mod(int val) {
         if(val < 0) {
             val += MOD;
         }
-        return val % MOD;
+        while(val >= MOD) {
+            val -= MOD;
+        }
+        return val;
     }
 public:
     int distinctSubseqII(string s) {
@@ -14,11 +17,14 @@ public:
         dp[0][0] = 1;
         for(int i = 1; i <= N; ++i) {
             int alphaIdx = s[i-1] - 'a';
-            dp[i][0] = mod(dp[i-1][0] + dp[i-1][1]);
-            dp[i][1] = mod(dp[i][0] - sum[alphaIdx]);
-            sum[alphaIdx] = mod(dp[i][1] + sum[alphaIdx]);
+            int cur = i % 2;
+            int prv = (i+1) % 2;
+            dp[cur][0] = mod(dp[prv][0] + dp[prv][1]);
+            dp[cur][1] = mod(dp[cur][0] - sum[alphaIdx]);
+            sum[alphaIdx] = mod(dp[cur][1] + sum[alphaIdx]);
         }
         
-        return mod(dp[N][0] + dp[N][1] - 1);
+        int target = N % 2;
+        return mod(dp[target][0] + dp[target][1] - 1);
     }
 };

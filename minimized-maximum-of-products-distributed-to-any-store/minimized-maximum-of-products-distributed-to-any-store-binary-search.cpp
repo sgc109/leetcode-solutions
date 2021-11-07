@@ -1,15 +1,14 @@
 class Solution {
-    bool isPoss(int x, int n, vector<int> qs) {
-        int pos = 0;
-        for(int i = 0; i < n && pos < qs.size(); ++i) {
-            if(qs[pos] <= x) ++pos;
-            else qs[pos] -= x;
+    bool isPoss(int x, int n, vector<int>& qs) {
+        int cnt = 0;
+        for(int q : qs) {
+            cnt += (q+x-1) / x;
         }
-        return pos == qs.size();
+        return cnt <= n;
     }
 public:
     int minimizedMaximum(int n, vector<int>& quantities) {
-        int lo = 0, hi = 100000;
+        int lo = 1, hi = 100000;
         while(lo < hi) {
             int mid = lo + (hi - lo) / 2;
             if(isPoss(mid, n, quantities)) {

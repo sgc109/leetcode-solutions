@@ -1,5 +1,5 @@
 class Solution {
-    int count[26] = {0, };
+    unordered_map<char,int> count;
     int nextConso[103];
     bool isVowel(char ch) {
         return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
@@ -14,22 +14,15 @@ public:
         }
         int ans = 0;
         int l = 0, r = 0;
-        bool found = false;
         int vowelCnt = 0;
         for(r = 0; r < N; ++r) {
             char ch = word[r];
             if(!isVowel(ch)) {
-                if(found) {
-                    memset(count, 0, sizeof(count));
-                    vowelCnt = 0;
-                    found = false;
-                }
+                count['a'] = count['e'] = count['i'] = count['o'] = count['u'] = 0;
+                vowelCnt = 0;
                 l = r + 1;
             } else {
-                if(!found) {
-                    found = true;
-                }
-                int& target = count[ch - 'a'];
+                int& target = count[ch];
                 ++target;
                 if(target == 1) {
                     ++vowelCnt;
@@ -37,7 +30,7 @@ public:
                 while(vowelCnt == 5) {
                     ans += nextConso[r] - r;
                     char ch = word[l++];
-                    int& target = count[ch - 'a'];
+                    int& target = count[ch];
                     --target;
                     if(target == 0) {
                         --vowelCnt;

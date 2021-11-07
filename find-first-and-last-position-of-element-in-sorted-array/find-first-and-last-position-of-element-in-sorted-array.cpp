@@ -1,16 +1,20 @@
 class Solution {
+    int lower(vector<int>& nums, int target) {
+        int lo = 0, hi = nums.size();
+        while(lo < hi) {
+            int mid = lo + (hi-lo) / 2;
+            if(nums[mid] < target) lo = mid + 1;
+            else hi = mid;
+        }
+        return lo;
+    }
 public:
     vector<int> searchRange(vector<int>& nums, int target) {
-        int l = lower_bound(begin(nums), end(nums), target) - begin(nums);
-        int r = upper_bound(begin(nums), end(nums), target) - begin(nums);
-        vector<int> ans;
+        int l = lower(nums, target);
+        int r = lower(nums, target + 1) - 1;
         if(l == nums.size() || nums[l] != target) {
-            ans.push_back(-1);
-            ans.push_back(-1);
-            return ans;
+            return vector<int>({-1, -1});
         }
-        ans.push_back(l);
-        ans.push_back(r - 1);
-        return ans;
+        return vector<int>({l, r});
     }
 };

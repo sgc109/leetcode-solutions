@@ -9,7 +9,7 @@ public:
 */
 
 class Solution {
-    int dfs(Employee* me, unordered_map<int, Employee*>& employeeMap) {
+    int dfs(Employee* me, array<Employee*,2001>& employeeMap) {
         int ret = me->importance;
         for(int subId : me->subordinates) {
             Employee* sub = employeeMap[subId];
@@ -19,7 +19,7 @@ class Solution {
     }
 public:
     int getImportance(vector<Employee*> employees, int id) {
-        unordered_map<int, Employee*> employeeMap;
+        array<Employee*,2001> employeeMap;
         for(auto employee : employees) {
             employeeMap[employee->id] = employee;
         }

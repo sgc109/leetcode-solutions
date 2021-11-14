@@ -25,9 +25,11 @@ class Solution {
     }
 public:
     vector<int> dailyTemperatures(vector<int>& temperatures) {
+        int N = temperatures.size();
+        
         fill(minIdx, minIdx+111, MAX_IDX);
         fill(sqrtMinIdx, sqrtMinIdx+12, MAX_IDX);
-        int N = temperatures.size();
+        
         vector<int> ans(N);
         for(int i = N-1; i >= 0; --i) {
             int t = temperatures[i];

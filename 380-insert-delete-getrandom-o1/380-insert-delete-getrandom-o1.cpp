@@ -19,12 +19,11 @@ public:
     }
     
     bool remove(int val) {
-        auto entry = mymap.find(val);
-        if(entry == mymap.end()) {
+        if(mymap.count(val) == 0) {
             return false;
         }
         
-        int idx = entry->second;
+        int idx = mymap[val];
         mymap[vals.back()] = idx;
         swap(vals[idx], vals[vals.size()-1]);
         vals.pop_back();

@@ -7,7 +7,7 @@ public:
     }
     
     bool insert(int val) {
-        if(mymap.find(val) != mymap.end()) {
+        if(mymap.count(val) > 0) {
             return false;
         }
         

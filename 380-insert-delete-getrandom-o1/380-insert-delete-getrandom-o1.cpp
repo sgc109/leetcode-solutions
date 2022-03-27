@@ -1,41 +1,38 @@
 class RandomizedSet {
-    vector<int> vals;
-    unordered_map<int, int> mymap;
+    
+    vector<int> elements;
+    unordered_map<int, int> val_to_index;
+    
 public:
     RandomizedSet() {
         
     }
     
     bool insert(int val) {
-        if(mymap.count(val) > 0) {
-            return false;
-        }
-        
-        int idx = vals.size();
-        mymap[val] = idx;
-        vals.push_back(val);
-        
+        if(val_to_index.count(val)) return false;
+        val_to_index[val] = elements.size();
+        elements.push_back(val);
         return true;
     }
     
     bool remove(int val) {
-        if(mymap.count(val) == 0) {
-            return false;
-        }
+        if(!val_to_index.count(val)) return false;
         
-        int idx = mymap[val];
-        mymap[vals.back()] = idx;
-        swap(vals[idx], vals[vals.size()-1]);
-        vals.pop_back();
-        mymap.erase(val);
+        int last = elements.back();
+        elements.pop_back();
+        
+        val_to_index[last] = val_to_index[val];
+        elements[val_to_index[last]] = last;
+        val_to_index.erase(val);
         
         return true;
     }
     
     int getRandom() {
-        int idx = rand() % vals.size();
         
-        return vals[idx];
+        return elements[rand() % elements.size()];
+        
+        
     }
 };
 

@@ -5,17 +5,14 @@ public:
     for(int num : nums) {
       counts[num]++;
     }
-    vector<vector<int>> buckets(nums.size() + 1, vector<int>());
-    for(auto p : counts) {
-      buckets[p.second].push_back(p.first);
+    vector<pair<int,int>> pairs;
+    for(auto entry : counts) {
+      pairs.push_back({entry.second, entry.first});
     }
+    sort(pairs.begin(), pairs.end(), greater<pair<int,int>>());
     vector<int> ret;
-    for(int i = nums.size(); i >= 1; --i) {
-      if(ret.size() == k) break;
-      for(auto num : buckets[i]) {
-        ret.push_back(num);
-        if(ret.size() == k) break;
-      }
+    for(int i = 0; i < k; ++i) {
+      ret.push_back(pairs[i].second);
     }
     return ret;
   }

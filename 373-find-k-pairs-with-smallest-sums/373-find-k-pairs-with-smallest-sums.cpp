@@ -24,13 +24,12 @@ public:
       int ansFirst = shortList[cur.i];
       int ansSecond = longList[cur.j];
       if(N >= M) swap(ansFirst, ansSecond);
-      vector<int> toPush({ansFirst, ansSecond});
-      ret.push_back(toPush);
+      ret.push_back(vector<int>({ansFirst, ansSecond}));
       if(cur.j + 1 < longList.size()) {
         pq.push(Node{shortList[cur.i] + longList[cur.j + 1], cur.i, cur.j + 1});
       }
     }
 
-    return ret; // [(1,1), (2,1), (1,11), 
+    return ret;
   }
 };

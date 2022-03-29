@@ -5,7 +5,7 @@ public:
     int N = s.size(); // N = 5
     int ans = 0; // 3
     int l = 0;
-    unordered_map<char,int> occur; // {e=0, c=0, b=1, a=1}
+    vector<int> occur(256, 0); // {e=0, c=0, b=1, a=1}
     int cntUnique = 0; // 2
     for(int r = 0; r < N; ++r) { // l = 3, r = 5
       occur[s[r]]++;

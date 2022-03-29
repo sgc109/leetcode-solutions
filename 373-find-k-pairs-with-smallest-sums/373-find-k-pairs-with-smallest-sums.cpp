@@ -11,21 +11,26 @@ public:
   vector<vector<int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k) {
     int N = nums1.size();
     int M = nums2.size();
+    vector<int> shortList = N < M ? nums1 : nums2;
+    vector<int> longList = N < M ? nums2 : nums1;
     priority_queue<Node> pq;
-    for(int i = 0; i < N; ++i) {
-      pq.push(Node{nums1[i] + nums2[0], i, 0});
+    for(int i = 0; i < shortList.size(); ++i) {
+      pq.push(Node{shortList[i] + longList[0], i, 0});
     }
     vector<vector<int>> ret;
     while(ret.size() < k && !pq.empty()) {
-      Node cur = pq.top(); // (12,1,0)
+      Node cur = pq.top();
       pq.pop();
-      vector<int> toPush({nums1[cur.i], nums2[cur.j]});
+      int ansFirst = shortList[cur.i];
+      int ansSecond = longList[cur.j];
+      if(N >= M) swap(ansFirst, ansSecond);
+      vector<int> toPush({ansFirst, ansSecond});
       ret.push_back(toPush);
-      if(cur.j + 1 < M) {
-        pq.push(Node{nums1[cur.i] + nums2[cur.j + 1], cur.i, cur.j + 1});
+      if(cur.j + 1 < longList.size()) {
+        pq.push(Node{shortList[cur.i] + longList[cur.j + 1], cur.i, cur.j + 1});
       }
     }
 
-    return ret;
+    return ret; // [(1,1), (2,1), (1,11), 
   }
 };

@@ -1,19 +1,19 @@
 class Solution {
 int ans = -1;
-void find(TreeNode* node, int& k) {
+int find(TreeNode* node, int k) {
   if (node == nullptr) {
-    return;
+    return 0;
   }
-  find(node->left, k);
+  int left = find(node->left, k);
   if (ans != -1) {
-    return;
+    return 0;
   }
-  if (k == 1) {
+  if (k - left == 1) {
     ans = node->val;
-    return;
+    return 0;
   }
-  --k;
-  find(node->right, k);
+  int right = find(node->right, k - left - 1);
+  return 1 + left + right;
 }
 public:
   int kthSmallest(TreeNode* root, int k) {

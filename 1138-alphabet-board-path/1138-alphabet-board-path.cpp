@@ -24,15 +24,8 @@ public:
             int rDiff = nextPos.r - curPos.r;
             int cDiff = nextPos.c - curPos.c;
             
-            string rStr = "";
-            for(int i = 0; i < abs(rDiff); ++i) {
-                rStr += (rDiff > 0 ? 'D' : 'U');
-            }
-            
-            string cStr = "";
-            for(int i = 0; i < abs(cDiff); ++i) {
-                cStr += (cDiff > 0 ? 'R' : 'L');
-            }
+            string rStr = string(abs(rDiff), rDiff > 0 ? 'D' : 'U');
+            string cStr = string(abs(cDiff), cDiff > 0 ? 'R' : 'L');
             
             if(next == 'z') {
                 ans += cStr + rStr;

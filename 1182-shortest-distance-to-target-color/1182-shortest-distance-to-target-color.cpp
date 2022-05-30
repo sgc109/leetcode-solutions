@@ -3,31 +3,48 @@ class Solution {
     int N;
 public:
     vector<int> shortestDistanceColor(vector<int>& colors, vector<vector<int>>& queries) {
-        N = colors.size();
+        int N = colors.size();
+        int M = queries.size();
+        vector<vector<vector<int>>> mark = vector<vector<vector<int>>>(3, vector<vector<int>>(N, vector<int>()));
         
-        vector<vector<int>> poses = vector<vector<int>>(3, vector<int>());
-        for(int i = 0; i < colors.size(); ++i) {
-            int color = colors[i] - 1;
-            poses[color].push_back(i);
+        for(int i = 0; i < M; ++i) {
+            int idx = queries[i][0];
+            int col = queries[i][1] - 1;
+            mark[col][idx].push_back(i);
         }
         
-        vector<int> ans;
+        vector<int> ans(M, INF);
         
-        for(vector<int>& q : queries) {
-            int idx = q[0];
-            int color = q[1] - 1;
-            
-            int targetIdx = lower_bound(begin(poses[color]), end(poses[color]), idx) - begin(poses[color]);
-            int minD = INF;
-            if(targetIdx < poses[color].size()) {
-                minD = min(minD, poses[color][targetIdx] - idx);
+        for(int i = 0; i < 3; ++i) {
+            int last = -1;
+            for(int j = 0; j < N; ++j) {
+                if(colors[j] - 1 == i) {
+                    last = j;
+                }
+                if(last != -1) {
+                    for(int idx : mark[i][j]) {
+                        ans[idx] = min(ans[idx], j - last);
+                    }
+                }
             }
-            if(targetIdx - 1 < poses[color].size()) {
-                minD = min(minD, idx - poses[color][targetIdx - 1]);
-            }
-            ans.push_back(minD == INF ? -1 : minD);
         }
         
+        for(int i = 0; i < 3; ++i) {
+            int last = N;
+            for(int j = N-1; j >= 0; --j) {
+                if(colors[j] - 1 == i) {
+                    last = j;
+                }
+                if(last != N) {
+                    for(int idx : mark[i][j]) {
+                        ans[idx] = min(ans[idx], last - j);
+                    }
+                }
+            }
+        }
+        for(int i = 0; i < M; ++i) {
+            if(ans[i] == INF) ans[i] = -1;
+        }
         return ans;
     }
 };

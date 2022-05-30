@@ -28,9 +28,11 @@ public:
             string cStr = string(abs(cDiff), cDiff > 0 ? 'R' : 'L');
             
             if(next == 'z') {
-                ans += cStr + rStr;
+                ans += cStr;
+                ans += rStr;
             } else {
-                ans += rStr + cStr;
+                ans += rStr;
+                ans += cStr;
             }
             ans += '!';
             curPos = nextPos;

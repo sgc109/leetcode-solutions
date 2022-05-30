@@ -10,9 +10,6 @@ public:
         for(int i = 0; i < N; ++i) {
             int x = points[i][0];
             int y = points[i][1];
-            //if(memo.count(x) == 0) {
-            //    memo[x] = unordered_set<int>();
-            //}
             memo[x].insert(y);
         }
         for(int i = 0; i < N - 1; ++i) {

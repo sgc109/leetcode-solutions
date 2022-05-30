@@ -1,7 +1,10 @@
 class Solution {
     const int INF = 16e8 + 1;
     
-    unordered_map<int, unordered_set<int>> memo;
+    unordered_set<int> memo;
+    int calcIdx(int x, int y) {
+        return x * 40001 + y;
+    }
 public:
     int minAreaRect(vector<vector<int>>& points) {
         int ans = INF;
@@ -10,7 +13,7 @@ public:
         for(int i = 0; i < N; ++i) {
             int x = points[i][0];
             int y = points[i][1];
-            memo[x].insert(y);
+            memo.insert(calcIdx(x, y));
         }
         for(int i = 0; i < N - 1; ++i) {
             for(int j = i + 1; j < N; ++j) {
@@ -21,7 +24,7 @@ public:
                 if(x1 == x2 || y1 == y2) {
                     continue;
                 }
-                if(memo[x1].count(y2) == 0 || memo[x2].count(y1) == 0) {
+                if(memo.count(calcIdx(x1, y2)) == 0 || memo.count(calcIdx(x2, y1)) == 0) {
                     continue;
                 }
                 int w = abs(points[i][0] - points[j][0]);

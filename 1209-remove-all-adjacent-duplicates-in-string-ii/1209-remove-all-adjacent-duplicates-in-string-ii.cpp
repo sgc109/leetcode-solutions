@@ -5,20 +5,18 @@ public:
         for(char c : s) {
             bool isTopCur = stk.size() > 0 && stk.back().first == c;
             if(isTopCur && stk.back().second + 1 == k) {
-                for(int i = 0; i < k - 1; ++i) {
-                    stk.pop_back();
-                }
+                stk.pop_back();
             } else {
-                int cnt = 1;
                 if(isTopCur) {
-                    cnt = stk.back().second + 1;
+                    stk.back().second += 1;
+                } else {
+                    stk.push_back({c, 1});
                 }
-                stk.push_back({c, cnt});
             }
         }
         string ans;
         for(auto p : stk) {
-            ans += p.first;
+            ans += string(p.second, p.first);
         }
         return ans;
     }

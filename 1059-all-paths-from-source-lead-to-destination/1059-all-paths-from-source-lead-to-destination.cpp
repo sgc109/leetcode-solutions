@@ -38,10 +38,8 @@ public:
         }
         
         for(int i = 0; i < n; ++i) {
-            if(fromSrc[i]) {
-                if(!visited[i] || (G[i].size() == 0 && i != destination)) {
-                    return false;
-                }
+            if(fromSrc[i] && (!visited[i] || (G[i].size() == 0 && i != destination))) {
+                return false;
             }
         }
         

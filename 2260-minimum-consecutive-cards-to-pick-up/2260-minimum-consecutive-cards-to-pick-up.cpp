@@ -1,21 +1,15 @@
 class Solution {
 public:
     int minimumCardPickup(vector<int>& cards) {
-        unordered_map<int, vector<int>> hashMap;
+        unordered_map<int, int> lastIdx;
         
+        int ans = cards.size() + 1;
         for(int i = 0; i < cards.size(); ++i) {
             int num = cards[i];
-            if(hashMap.count(num) == 0) {
-                hashMap[num] = vector<int>();
+            if(lastIdx.count(num) != 0) {
+                ans = min(ans, i - lastIdx[num] + 1);
             }
-            hashMap[num].push_back(i);
-        }
-        int ans = cards.size() + 1;
-        for(auto p : hashMap) {
-            auto v = p.second;
-            for(int i = 1; i < v.size(); ++i) {
-                ans = min(ans, v[i] - v[i-1] + 1);
-            }
+            lastIdx[num] = i;
         }
         
         return ans == cards.size() + 1 ? -1 : ans;

@@ -10,19 +10,24 @@
  * };
  */
 class Solution {
-    void dfs(TreeNode* cur, int depth, vector<vector<int>>& ans) {
-        if(cur == nullptr) return;
-        if(ans.size() <= depth) {
-            ans.push_back(vector<int>());
-        }
-        dfs(cur->left, depth + 1, ans);
-        dfs(cur->right, depth + 1, ans);
-        ans[depth].push_back(cur->val);
-    }
+    queue<pair<TreeNode*, int>> queue;
 public:
     vector<vector<int>> levelOrderBottom(TreeNode* root) {
         vector<vector<int>> ret = vector<vector<int>>();
-        dfs(root, 0, ret);
+        queue.push({root, 0});
+        while(!queue.empty()) {
+            auto cur = queue.front();
+            queue.pop();
+            auto node = cur.first;
+            if(node == nullptr) continue;
+            int dist = cur.second;
+            if(ret.size() <= dist) {
+                ret.push_back(vector<int>());
+            }
+            ret[dist].push_back(node->val);
+            queue.push({node->left, dist + 1});
+            queue.push({node->right, dist + 1});
+        }
         reverse(begin(ret), end(ret));
         return ret;
     }

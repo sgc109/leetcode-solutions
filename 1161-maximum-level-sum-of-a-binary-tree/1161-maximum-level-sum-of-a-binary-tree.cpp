@@ -10,33 +10,29 @@
  * };
  */
 class Solution {
-    queue<pair<TreeNode*, int>> queue;
+    unordered_map<int, int> sumPerLevel;
+    int maxLevel = -1;
+    void dfs(TreeNode* cur, int level) {
+        if(cur == nullptr) return;
+        sumPerLevel[level] += cur->val;
+        maxLevel = max(maxLevel, level);
+        
+        dfs(cur->left, level + 1);
+        dfs(cur->right, level + 1);
+    }
 public:
     int maxLevelSum(TreeNode* root) {
-        vector<int> sums;
-        queue.push({root, 0});
-        while(!queue.empty()) {
-            auto cur = queue.front();
-            queue.pop();
-            auto node = cur.first;
-            if(node == nullptr) continue;
-            int dist = cur.second;
-            if(sums.size() <= dist) {
-                sums.push_back(0);
-            }
-            sums[dist] += node->val;
-            queue.push({node->left, dist + 1});
-            queue.push({node->right, dist + 1});
-        }
-        int maxNum = -1000000001;
-        int idx = -1;
-        for(int i = 0; i < sums.size(); ++i) {
-            if(sums[i] > maxNum) {
-                maxNum = sums[i];
-                idx = i;
+        dfs(root, 1);
+        
+        int ansLevel;
+        int ans = -1e9 - 1;
+        for(int i = 1; i <= maxLevel; ++i) {
+            if(ans < sumPerLevel[i]) {
+                ans = sumPerLevel[i];
+                ansLevel = i;
             }
         }
         
-        return idx + 1;
+        return ansLevel;
     }
 };

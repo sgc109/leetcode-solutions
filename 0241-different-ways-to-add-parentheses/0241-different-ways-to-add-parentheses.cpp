@@ -1,5 +1,4 @@
 class Solution {
-public:
     vector<int> go(int l, int r, vector<int>& nums, vector<char>& ops) {
         if(l == r) {
             return vector<int>({nums[l]});
@@ -22,7 +21,7 @@ public:
         }
         return ans;
     }
-    
+public:
     vector<int> diffWaysToCompute(string expression) {
         vector<int> nums;
         vector<char> ops;

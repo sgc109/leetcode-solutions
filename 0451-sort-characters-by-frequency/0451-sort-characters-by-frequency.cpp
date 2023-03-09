@@ -1,5 +1,4 @@
 class Solution {
-public:
     struct Ottur {
         int frq;
         char c;
@@ -11,7 +10,7 @@ public:
             return c < rhs.c;
         }
     };
-
+public:
     string frequencySort(string s) {
         unordered_map<char, int> counter;
         for(char c : s) {

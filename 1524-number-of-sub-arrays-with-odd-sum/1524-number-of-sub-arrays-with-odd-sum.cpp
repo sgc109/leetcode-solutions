@@ -1,5 +1,11 @@
 class Solution {
     int MOD = 1e9 + 7;
+    int mod(int x) {
+        if(x >= MOD) {
+            return x - MOD;
+        }
+        return x;
+    }
 public:
     int numOfSubarrays(vector<int>& arr) {
         int N = arr.size();
@@ -18,7 +24,7 @@ public:
         
         int ans = 0;
         for(int i = 1; i <= N; ++i) {
-            ans = (ans + dp[i][1]) % MOD;
+            ans = mod(ans + dp[i][1]);
         }
         return ans;
     }

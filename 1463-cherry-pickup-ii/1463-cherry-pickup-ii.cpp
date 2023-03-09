@@ -1,12 +1,11 @@
 class Solution {
-public:
     int R, C;
     int dp[2][73][73];
 
     bool inRange(int x1, int x2) {
         return 0 <= x1 && x1 < C && 0 <= x2 && x2 < C;
     }
-
+public:
     int cherryPickup(vector<vector<int>>& grid) {
         R = grid.size();
         C = grid[0].size();

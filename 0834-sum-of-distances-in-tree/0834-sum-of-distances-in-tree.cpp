@@ -19,16 +19,16 @@ class Solution {
         }
     }
     
-    void go(int cur, int par) {
+    void go(int cur, int prvAns, int par) {
         if(cur != ROOT) {
-            ans[cur] = ans[par] - sizes[cur] + N - sizes[cur];
+            ans[cur] = prvAns - sizes[cur] + N - sizes[cur];
         }
         
         for(int child : G[cur]) {
             if(child == par) {
                 continue;
             }
-            go(child, cur);
+            go(child, ans[cur], cur);
         }
     }
 public:
@@ -45,7 +45,7 @@ public:
         ans = vector<int>(N, 0);
         ans[0] = sumUsed[0];
         
-        go(0, -1);
+        go(0, -1, -1);
         return ans;
     }
 };

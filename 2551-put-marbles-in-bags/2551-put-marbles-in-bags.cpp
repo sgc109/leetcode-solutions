@@ -4,10 +4,10 @@ class Solution {
 public:
     long long putMarbles(vector<int>& weights, int k) {
         int N = weights.size();
-        vector<int> adjSums;
+        vector<int> adjSums(N - 1);
 
         for(int i = 0; i < N - 1; ++i) {
-            adjSums.push_back(weights[i] + weights[i + 1]);
+            adjSums[i] = weights[i] + weights[i + 1];
         }
 
         sort(begin(adjSums), end(adjSums));

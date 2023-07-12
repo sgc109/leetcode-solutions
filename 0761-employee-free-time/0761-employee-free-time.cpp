@@ -14,33 +14,39 @@ public:
 };
 */
 
-struct Range {
-    int s, e;
-    bool operator<(const Range& rhs) const {
-        return s < rhs.s;
-    }
-};
-
 class Solution {
+    vector<pair<int,int>> mergeAll(vector<pair<int,int>> intervals) {
+        vector<pair<int,int>> merged;
+
+        for(auto inter : intervals) {
+            if(merged.size() == 0 || merged.back().second < inter.first) {
+                merged.push_back(inter);
+            } else {
+                merged.back() = {merged.back().first, max(merged.back().second, inter.second)};
+            }
+        }
+
+        return merged;
+    }
 public:
     vector<Interval> employeeFreeTime(vector<vector<Interval>> schedule) {
-        vector<Range> ranges;
+        vector<pair<int,int>> intervals;
+        
         for(auto employee : schedule) {
-            for(auto inter : employee) {
-                ranges.push_back(Range{inter.start, inter.end});
+            for(auto range : employee) {
+                intervals.push_back({range.start, range.end});
             }
         }
-        sort(begin(ranges), end(ranges));
-        
-        int last = -1;
+
+        sort(begin(intervals), end(intervals));
+
+        auto merged = mergeAll(intervals);
+
         vector<Interval> ans;
-        for(auto range : ranges) {
-            if(last != -1 && last < range.s) {
-                ans.push_back(Interval{last, range.s});
-            }
-            last = max(last, range.e);
+        for(int i = 0; i < merged.size() - 1; ++i) {
+            ans.push_back(Interval(merged[i].second, merged[i+1].first));
         }
-        
+
         return ans;
     }
 };

@@ -1,6 +1,5 @@
 class Solution {
     int maxLenWithNon0s(int s, int e, vector<int>& nums) {
-        printf("s: %d, e: %d\n", s, e);
         if(s > e) {
             return 0;
         }

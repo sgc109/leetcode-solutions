@@ -1,35 +1,27 @@
 class Solution {
-    pair<int, int> solve(int l, int r, int k, vector<int>& nums) {
-        if(l == r) {
-            int cntBetween = nums[l + 1] - nums[l] - 1;
-            if(cntBetween >= k) {
-                return {nums[l] + k, -1};
-            } else {
-                return {-1, cntBetween};
-            }
-        }
-        int m = (l + r) / 2;
-        auto leftRes = solve(l, m, k, nums);
-        if(leftRes.first != -1) {
-            return leftRes;
-        }
-
-        auto rightRes = solve(m + 1, r, k - leftRes.second, nums);
-        if(rightRes.first != -1) {
-            return rightRes;
-        }
-        return {-1, leftRes.second + rightRes.second};
-    }
 public:
     int missingElement(vector<int>& nums, int k) {
-        if(nums.size() == 1) {
-            return nums[0] + k;
+        int N = size(nums);
+        int lo = 0, hi = N - 1;
+        while(lo < hi) {
+            int mid = (lo + hi) / 2;
+            if(lo == mid) {
+                int cntBetween = nums[hi] - nums[lo] - 1;
+                if(cntBetween >= k) {
+                    return nums[lo] + k;
+                }
+                assert(hi == N - 1);
+                k -= cntBetween;
+                break;
+            }
+            int cntBetween = nums[mid] - nums[lo] - 1 - (mid - lo - 1);
+            if(cntBetween >= k) {
+                hi = mid;
+            } else {
+                k -= cntBetween;
+                lo = mid;
+            }
         }
-        auto res = solve(0, size(nums) - 2, k, nums);
-        if(res.first != -1) {
-            return res.first;
-        } else {
-            return nums.back() + k - res.second;
-        }
+        return nums.back() + k;
     }
 };

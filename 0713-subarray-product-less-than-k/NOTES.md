@@ -1,0 +1,1 @@
+Took 13m 38s to solve from starting to read the description to getting Accpeted.

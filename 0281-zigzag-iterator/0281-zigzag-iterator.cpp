@@ -1,6 +1,8 @@
 /*
 Took: 14m 15s
-Time: O(sum(len(vi)))
+Time:
+  - next(): O(1)
+  - hasNext(): O(1)
 Space: O(N)
 */
 

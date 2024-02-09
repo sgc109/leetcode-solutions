@@ -1,3 +1,9 @@
+/*
+Took: 10m 15s
+Time: O(N)
+Space: O(N)
+*/
+
 class Solution {
 public:
     vector<int> nextGreaterElements(vector<int>& nums) {

@@ -1,3 +1,10 @@
+/*
+Took: 34m 56s
+Time: O(N^2)
+Space: O(N^2)
+
+*/
+
 class Solution {
 public:
     vector<int> largestDivisibleSubset(vector<int>& nums) {

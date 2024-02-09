@@ -1,11 +1,17 @@
+/*
+Took: 14m 15s
+Time: O(sum(len(vi)))
+Space: O(N)
+*/
+
 class ZigzagIterator {
-    vector<vector<int>> vectors;
+    vector<vector<int>*> vectors;
     vector<int> ptrs;
     queue<int> q;
 public:
     ZigzagIterator(vector<int>& v1, vector<int>& v2) {
-        vectors.push_back(v1);
-        vectors.push_back(v2);
+        vectors.push_back(&v1);
+        vectors.push_back(&v2);
         ptrs = vector<int>(2, 0);
         if(v1.size() > 0) {
             q.push(0);
@@ -18,7 +24,7 @@ public:
     int next() {
         int vid = q.front();
         q.pop();
-        auto v = vectors[vid];
+        auto v = *vectors[vid];
 
         int ret = v[ptrs[vid]];
         

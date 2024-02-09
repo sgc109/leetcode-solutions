@@ -5,7 +5,6 @@ Space: O(len(s1))
 */
 
 class Solution {
-    const int INF = 987654321;
     vector<vector<int>> closest;
 public:
     string minWindow(string s1, string s2) {

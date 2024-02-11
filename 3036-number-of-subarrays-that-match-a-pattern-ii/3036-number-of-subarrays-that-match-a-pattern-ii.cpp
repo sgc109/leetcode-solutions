@@ -1,31 +1,41 @@
-typedef long long ll;
-
 class Solution {
-    const ll BASE = 5;
-    const ll MOD = 1e9 + 7;
-    vector<ll> powers;
-    bool compare(vector<int>& a, vector<int>& b) {
-        if(a.size() != b.size()) {
-            return false;
-        }
-        for(int i = 0; i < a.size(); ++i) {
-            if(a[i] != b[i]) {
-                return false;
+    vector<int> calcZArray(vector<int>& base, vector<int>& pattern) {
+        vector<int> zArray = vector<int>(size(base), 0);
+
+        int n = size(base);
+        int l, r = 0;
+        for(int i = 1; i < n; ++i) {
+            if(i > r) {
+                l = r = i;
+                while(r < n && base[r] == base[r - l]) ++r;
+                zArray[i] = r - l;
+                --r;
+            } else {
+                int k = i - l;
+                if(zArray[k] < r - i + 1) {
+                    zArray[i] = zArray[k];
+                } else {
+                    l = i;
+                    while(r < n && base[r] == base[r - l]) ++r;
+                    zArray[i] = r - l;
+                    --r;
+                }
             }
         }
-        return true;
+
+        return zArray;
+    }
+
+    vector<int> makeNewBase(vector<int>& base, vector<int>& pattern) {
+        vector<int> newBase(begin(pattern), end(pattern));
+        newBase.push_back(999);
+        newBase.insert(end(newBase), begin(base), end(base));
+        return newBase;
     }
 public:
     int countMatchingSubarrays(vector<int>& nums, vector<int>& pattern) {
-        int N = nums.size();
-        int M = pattern.size();
-        powers.resize(M + 1);
-        powers[0] = 1;
-        for(int i = 1; i <= M; ++i) {
-            powers[i] = powers[i - 1] * BASE % MOD;
-        }
-        vector<int> trans(N - 1);
-        for(int i = 0; i < N - 1; ++i) {
+        vector<int> trans(size(nums) - 1);
+        for(int i = 0; i < size(nums) - 1; ++i) {
             if(nums[i] < nums[i + 1]) {
                 trans[i] = 1;
             } else if(nums[i] == nums[i + 1]) {
@@ -34,29 +44,11 @@ public:
                 trans[i] = -1;
             }
         }
-        ll hash = 0;
-        for(int i = 0; i < M; ++i) {
-            hash = hash * BASE + pattern[i] + 3;
-            hash %= MOD;
-        }
-        ll cmpHash = 0;
-        for(int i = 0; i < M; ++i) {
-            cmpHash = cmpHash * BASE + trans[i] + 3;
-            cmpHash %= MOD;
-        }
+        vector<int> base = makeNewBase(trans, pattern);
+        vector<int> zArray = calcZArray(base, pattern);
         int ans = 0;
-        for(int i = 0; i < trans.size() - M + 1; ++i) {
-            if(hash == cmpHash) {
-                ++ans;
-            }
-            if(i == (trans.size() - M)) {
-                break;
-            }
-            cmpHash -= powers[M - 1] * (trans[i] + 3) % MOD;
-            cmpHash += MOD;
-            cmpHash *= BASE;
-            cmpHash += trans[i + M] + 3;
-            cmpHash %= MOD;
+        for(int i = size(pattern) + 1; i < size(base); ++i) {
+            ans += (zArray[i] == size(pattern));
         }
         
         return ans;

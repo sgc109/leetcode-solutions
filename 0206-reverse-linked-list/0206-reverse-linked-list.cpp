@@ -9,21 +9,21 @@
  * };
  */
 class Solution {
-    ListNode* reverse(ListNode* head) {
-        if(head->next == nullptr) {
-            return head;
-        }
-        auto ret = reverse(head->next);
-        head->next->next = head;
-        return ret;
-    }
 public:
     ListNode* reverseList(ListNode* head) {
-        if(head == nullptr || head->next == nullptr) {
+        if (head == nullptr) {
             return head;
         }
-        auto ret = reverse(head);
-        head->next = nullptr;
-        return ret;
+        ListNode* prev = nullptr;
+        auto cur = head;
+
+        while (cur != nullptr) {
+            auto next = cur->next;
+            cur->next = prev;
+            prev = cur;
+            cur = next;
+        }
+
+        return prev;
     }
 };

@@ -47,7 +47,6 @@ public:
         int ans = 0;
         for(int i = 0; i < trans.size() - M + 1; ++i) {
             if(hash == cmpHash) {
-                printf("i: %d, hash: %lld, cmpHash: %lld\n", i, hash, cmpHash);
                 ++ans;
             }
             if(i == (trans.size() - M)) {

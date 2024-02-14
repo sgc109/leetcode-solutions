@@ -1,7 +1,7 @@
 typedef long long ll;
 
 class Solution {
-    const ll BASE = 5;
+    const ll BASE = 3;
     const ll MOD = 1e9 + 7;
     vector<ll> powers;
     bool compare(vector<int>& a, vector<int>& b) {
@@ -36,26 +36,27 @@ public:
         }
         ll hash = 0;
         for(int i = 0; i < M; ++i) {
-            hash = hash * BASE + pattern[i] + 3;
+            hash = hash * BASE + pattern[i] + 1;
             hash %= MOD;
         }
         ll cmpHash = 0;
         for(int i = 0; i < M; ++i) {
-            cmpHash = cmpHash * BASE + trans[i] + 3;
+            cmpHash = cmpHash * BASE + trans[i] + 1;
             cmpHash %= MOD;
         }
         int ans = 0;
         for(int i = 0; i < trans.size() - M + 1; ++i) {
             if(hash == cmpHash) {
+                printf("i: %d, hash: %lld, cmpHash: %lld\n", i, hash, cmpHash);
                 ++ans;
             }
             if(i == (trans.size() - M)) {
                 break;
             }
-            cmpHash -= powers[M - 1] * (trans[i] + 3) % MOD;
+            cmpHash -= powers[M - 1] * (trans[i] + 1) % MOD;
             cmpHash += MOD;
             cmpHash *= BASE;
-            cmpHash += trans[i + M] + 3;
+            cmpHash += trans[i + M] + 1;
             cmpHash %= MOD;
         }
         

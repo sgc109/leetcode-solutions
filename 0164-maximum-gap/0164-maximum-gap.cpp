@@ -14,7 +14,8 @@ public:
                 counter[i] += counter[i - 1];
             }
             vector<int> tmp(size(nums));
-            for(int num : nums) {
+            for(int i = size(nums) - 1; i >= 0; --i) {
+                int num = nums[i];
                 int digit = num / base % 10;
                 tmp[--counter[digit]] = num;
             }

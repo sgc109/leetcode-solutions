@@ -1,44 +1,35 @@
-/*
-
-version1 = 00000
-
-version = 1.
-version = .1
-version = .
-version = 1..1
-
-*/
-
 class Solution {
-    vector<int> convert(string verStr) {
-        verStr += '.';
-        vector<int> ret;
-        int prv = -1;
-        for(int i = 0; i < verStr.size(); ++i) {
-            if(verStr[i] == '.') {
-                string substr = verStr.substr(prv + 1, i);
-                int revision = stoi(substr);
-                ret.push_back(revision);
-                prv = i;
-            }
+    int getCurRevision(string& version, int& pos, int& prvIdx) {
+        if(pos >= size(version)) {
+            return 0;
+        }
+        int revision;
+        while(pos < size(version) && version[pos] != '.') {
+            ++pos;
         }
         
-        return ret;
+        if(prvIdx == pos) {
+            revision = 0;
+        } else {
+            revision = stoi(version.substr(prvIdx + 1, pos));
+            prvIdx = pos;
+            ++pos;
+        }
+
+        return revision;
     }
 public:
     int compareVersion(string version1, string version2) {
-        vector<int> vec1 = convert(version1);
-        vector<int> vec2 = convert(version2);
-        auto& targetToAdd = vec1.size() < vec2.size() ? vec1 : vec2;
+        int pos1 = 0, pos2 = 0;
+        int prvIdx1 = -1, prvIdx2 = -1;
 
-        while(vec1.size() != vec2.size()) {
-            targetToAdd.push_back(0);
-        }
+        while(pos1 < size(version1) || pos2 < size(version2)) {
+            int revision1 = getCurRevision(version1, pos1, prvIdx1);
+            int revision2 = getCurRevision(version2, pos2, prvIdx2);
 
-        for(int i = 0; i < vec1.size(); ++i) {
-            if(vec1[i] < vec2[i]) {
+            if(revision1 < revision2) {
                 return -1;
-            } else if(vec1[i] > vec2[i]) {
+            } else if(revision1 > revision2) {
                 return 1;
             }
         }

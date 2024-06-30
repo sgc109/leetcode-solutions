@@ -7,18 +7,18 @@ class Solution {
             }
             return;
         }
-        for(int i = 0; i <= numCnts[idx].second; ++i) {
+        solve(idx + 1, numCnts, curTarget, comb, ans);
+        int i;
+        for(i = 1; i <= numCnts[idx].second; ++i) {
             int toAdd = i * numCnts[idx].first;
             if(toAdd > curTarget) {
                 break;
             }
-            for(int j = 0; j < i; ++j) {
-                comb.push_back(numCnts[idx].first);
-            }
+            comb.push_back(numCnts[idx].first);
             solve(idx + 1, numCnts, curTarget - toAdd, comb, ans);
-            for(int j = 0; j < i; ++j) {
-                comb.pop_back();
-            }
+        }
+        for(int j = 0; j < i - 1; ++j) {
+            comb.pop_back();
         }
     }
 public:

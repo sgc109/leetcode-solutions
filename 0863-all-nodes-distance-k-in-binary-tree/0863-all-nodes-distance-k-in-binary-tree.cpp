@@ -8,63 +8,64 @@
  * };
  */
 class Solution {
-    vector<int> tree[503];
+    vector<int> ans;
+    int K;
+    TreeNode* targetNode;
 
+    int searchTarget(TreeNode* curNode) {
+        if(curNode == NULL) {
+            return -1;
+        }
+
+        if(curNode == targetNode) {
+            return 1;
+        }
+
+        int leftDistToTarget = searchTarget(curNode->left);
+        int rightDistToTarget = searchTarget(curNode->right);
+        if(leftDistToTarget == -1 && rightDistToTarget == -1) {
+            return -1;
+        }
+
+        int distToTarget = max(leftDistToTarget, rightDistToTarget);
+        if(distToTarget == K) {
+            ans.push_back(curNode->val);
+            return distToTarget + 1; 
+        }
+
+        if(leftDistToTarget != -1) {
+            searchAnswer(curNode->right, 0, K - leftDistToTarget - 1);
+        } else {
+            searchAnswer(curNode->left, 0, K - rightDistToTarget - 1);
+        }
+
+        return distToTarget + 1;
+    }
+
+    void searchAnswer(TreeNode* curNode, int curDist, int targetDist) {
+        if(curNode == NULL) {
+            return;
+        }
+        if(curDist == targetDist) {
+            ans.push_back(curNode->val);
+            return;
+        }
+        searchAnswer(curNode->left, curDist + 1, targetDist);
+        searchAnswer(curNode->right, curDist + 1, targetDist);
+    }
 public:
     vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
-        if(k == 0) {
-            return vector<int>({target->val});
+        if(root == target) {
+            searchAnswer(target, 0, k);
+            return ans;
         }
-        queue<TreeNode*> q;
-        unordered_map<TreeNode*, int> nodeToId;
-        unordered_map<int, TreeNode*> idToNode;
-        q.push(root);
-        int id = 0;
-        idToNode[id] = root;
-        nodeToId[root] = id++;
-        while(q.size() > 0) {
-            auto curNode = q.front();
-            int curId = nodeToId[curNode];
-            q.pop();
-            if(curNode->left != NULL) {
-                idToNode[id] = curNode->left;
-                nodeToId[curNode->left] = id;
-                q.push(curNode->left);
-                tree[curId].push_back(id);
-                tree[id].push_back(curId);
-                ++id;
-            }
-            if(curNode->right != NULL) {
-                idToNode[id] = curNode->right;
-                nodeToId[curNode->right] = id;
-                q.push(curNode->right);
-                tree[curId].push_back(id);
-                tree[id].push_back(curId);
-                ++id;
-            }
-        }
-        int targetId = nodeToId[target];
 
-        vector<int> dist(id, -1);
-        vector<int> ans;
-        queue<int> idQueue;
-        dist[targetId] = 0;
-        idQueue.push(targetId);
-        while(idQueue.size() > 0) {
-            auto curId = idQueue.front();
-            idQueue.pop();
-            int curDist = dist[curId];
-            if(curDist == k) {
-                ans.push_back(idToNode[curId]->val);
-            }
-            for(auto next : tree[curId]) {
-                if(dist[next] != -1) {
-                    continue;
-                }
-                idQueue.push(next);
-                dist[next] = curDist + 1;
-            }
-        }
+        this->K = k;
+        this->targetNode = target;
+        
+        searchTarget(root);
+        searchAnswer(target, 0, k);
+
         return ans;
     }
 };

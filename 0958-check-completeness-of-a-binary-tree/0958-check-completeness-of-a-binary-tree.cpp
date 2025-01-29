@@ -9,29 +9,34 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-const int INF = 101;
 class Solution {
-    int dfs(TreeNode* cur, int id) {
+    unordered_map<int, int> counts;
+    unordered_map<int, int> maxIds;
+    int maxLevel = -1;
+    bool dfs(TreeNode* cur, int id, int level) {
         if(!cur) {
-            return -1;
+            return true;
         }
-        if(id >= INF) {
-            return INF;
+        if(id > 100) {
+            return false;
         }
-        return max({id, dfs(cur->left, id * 2), dfs(cur->right, id * 2 + 1)});
-    }
-    bool dfs2(TreeNode* cur, int id, int maxId) {
-        if(!cur) {
-            return id > maxId;
-        }
-        return dfs2(cur->left, id * 2, maxId) && dfs2(cur->right, id * 2 + 1, maxId);
+        maxLevel = max(maxLevel, level);
+        counts[level]++;
+        maxIds[level] = max(maxIds[level], id);
+        
+        return dfs(cur->left, id * 2, level + 1) && dfs(cur->right, id * 2 + 1, level + 1);
     }
 public:
     bool isCompleteTree(TreeNode* root) {
-        int maxId = dfs(root, 1);
-        if(maxId == INF) {
+        bool canBeValid = dfs(root, 1, 0);
+        if(!canBeValid) {
             return false;
         }
-        return dfs2(root, 1, maxId);
+        for(int i = 0; i < maxLevel; ++i) {
+            if(counts[i] != (1 << i) || maxIds[i] != (1 << (i + 1)) - 1) {
+                return false;
+            }
+        }
+        return maxIds[maxLevel] == ((1 << maxLevel) + counts[maxLevel] - 1);
     }
 };

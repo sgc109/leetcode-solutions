@@ -11,22 +11,37 @@ public:
 
 class Solution {
 public:
-    Node* lowestCommonAncestor(Node* p, Node * q) { // p = 4, q = 5
-        // {4, 2, 5, 3}
+    Node* lowestCommonAncestor(Node* p, Node * q) { // p = 5, q = 4
+        // {5 -> ptr5, 4 -> ptr4, 3 -> ptr3, 2 -> ptr2}
         unordered_map<int, Node*> nodesInRouteToRoot;
-        Node* cur = p; // 3
-        while(cur) {
-            nodesInRouteToRoot[cur->val] = cur;
-            cur = cur->parent;
-        }
-        cur = q;
-        while(q) { // cur = 5
-            if(nodesInRouteToRoot.count(cur->val)) {
-                return nodesInRouteToRoot[cur->val];
+        while(p && q) { // p = null, q = 5
+            if(p == q) {
+                return p;
             }
-            cur = cur->parent;
+            if(nodesInRouteToRoot[p->val]) {
+                return nodesInRouteToRoot[p->val];
+            }
+            if(nodesInRouteToRoot[q->val]) {
+                return nodesInRouteToRoot[q->val];
+            }
+            nodesInRouteToRoot[p->val] = p;
+            nodesInRouteToRoot[q->val] = q;
+            p = p->parent;
+            q = q->parent;
+        }
+        while(p) {
+            if(nodesInRouteToRoot[p->val]) {
+                return nodesInRouteToRoot[p->val];
+            }
+            p = p->parent;
+        }
+        while(q) {
+            if(nodesInRouteToRoot[q->val]) {
+                return nodesInRouteToRoot[q->val];
+            }
+            q = q->parent;
         }
         // It's impossible to reach here
-        return nullptr;
+        return nullptr; // dummy
     }
 };

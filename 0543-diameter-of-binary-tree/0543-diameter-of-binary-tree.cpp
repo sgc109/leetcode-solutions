@@ -10,24 +10,26 @@
  * };
  */
 class Solution {
-    int dfs(TreeNode* cur, int dist, int& ans) {
+     // cur = 1
+     // dist = 0
+     // ans = 0
+    int dfs(TreeNode* cur, int& ans) {
         if(!cur) {
             return 0;
         }
         
-        int leftMaxDist = dfs(cur->left, dist + 1, ans);
-        int rightMaxDist = dfs(cur->right, dist + 1, ans);
+        int leftMaxDist = dfs(cur->left, ans); // 0
+        int rightMaxDist = dfs(cur->right, ans); // 0
 
-        int maxDist = max(leftMaxDist, rightMaxDist);
-        ans = max(ans, leftMaxDist + rightMaxDist);
-        ans = max(ans, maxDist + dist);
+        int maxDist = max(leftMaxDist, rightMaxDist); // 0
+        ans = max(ans, leftMaxDist + rightMaxDist); // 0
         
         return maxDist + 1;
     }
 public:
-    int diameterOfBinaryTree(TreeNode* root) {
+    int diameterOfBinaryTree(TreeNode* root) { // 1
         int ans = 0;
-        dfs(root, 0, ans);
+        dfs(root, ans);
         return ans;
     }
 };

@@ -8,15 +8,25 @@
  *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
+
+    5
+   / \
+  5   5
+
+
  */
 class Solution {
-    double minDiff = 2e9 + 1;
-    int minTarget;
-    void dfs(TreeNode* cur, double target) {
+    double minDiff = 2e9 + 1; // 3.428571
+    int minTarget; // 1
+    void dfs(TreeNode* cur, double target) { // cur = 1, target = 4.428571
         if(!cur) {
             return;
         }
-        double diff = abs(target - cur->val);
+        double diff = abs(target - cur->val); // 3.428571
+        if(diff == 0) {
+            minTarget = cur->val;
+            return;
+        }
 
         if(diff < minDiff || (diff == minDiff && cur->val < minTarget)) {
             minDiff = diff;
@@ -29,7 +39,7 @@ class Solution {
         }
     }
 public:
-    int closestValue(TreeNode* root, double target) {
+    int closestValue(TreeNode* root, double target) { // root = 1, target = 4.428571
         dfs(root, target);
         return minTarget;
     }

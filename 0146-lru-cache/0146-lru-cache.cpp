@@ -1,42 +1,90 @@
 class LRUCache {
-    unordered_map<int,int> hashMap; // {3: 3, 4: 4}
-    unordered_map<int,int> counter; // {1: 1, 2: 1, 3: 2, 4: 2}
-    queue<int> q; // [3, 2, 4, 1, 3, 4]
-    int cap; // 2
-    void refresh(int key) {
-        q.push(key);
-        counter[key]++;
+    struct ListNode {
+        int key;
+        int value;
+        ListNode* left;
+        ListNode* right;
+
+        ListNode(int key, int value) {
+            this->key = key;
+            this->value = value;
+            left = right = nullptr;
+        }
+    };
+    int capacity;
+    ListNode* head;
+    ListNode* tail;
+    unordered_map<int, ListNode*> keyToNode;
+
+    void append(ListNode* target) {
+        if(!head) {
+            head = tail = target;
+        } else {
+            tail->right = target;
+            target->left = tail;
+            target->right = nullptr;
+            tail = target;
+        }
+    }
+
+    // 'target' must exist in List already
+    void remove(ListNode* target) {
+        ListNode* left = target->left;
+        ListNode* right = target->right;
+        if(left) {
+            left->right = right;
+        }
+        if(right) {
+            right->left = left;
+        }
+        if(head == target) {
+            head = right;
+        }
+        if(tail == target) {
+            tail = left;
+        }
+    }
+
+    // 'target' must exist in List already
+    void refresh(ListNode* target) {
+        if(!head) {
+            head = tail = target;
+        } else {
+            remove(target);
+            append(target);
+        }
     }
 public:
     LRUCache(int capacity) {
-        this->cap = capacity;
+        this->capacity = capacity;
+        this->head = this->tail = nullptr;
     }
     
-    // [[2],[1,1],[2,2],[1],[3,3],[2],[4,4],[1],[3],[4]]
-
-    int get(int key) { // 4
-        if(hashMap.count(key)) {
-            refresh(key);
-            return hashMap[key];
-        } else {
+    int get(int key) {
+        if(!keyToNode.count(key)) {
             return -1;
         }
-    } // 1, -1, -1, 3, 4
+        ListNode* target = keyToNode[key];
+        refresh(target);
+        return target->value;
+    }
     
-    void put(int key, int value) { // 3, 3
-        if(hashMap.count(key) == 0 && hashMap.size() == cap) {
-            while(true) {
-                int frontKey = q.front(); // 1
-                q.pop();
-                counter[frontKey]--;
-                if(counter[frontKey] == 0) {
-                    hashMap.erase(frontKey);
-                    break;
-                }
+    void put(int key, int value) {
+        if(!keyToNode.count(key)) {
+            if(keyToNode.size() == capacity) {
+                keyToNode.erase(head->key);
+                ListNode* backup = head;
+                remove(head);
+                delete backup;
             }
+            ListNode* newNode = new ListNode(key, value);
+            keyToNode[key] = newNode;
+            append(newNode);
+            return;
         }
-        refresh(key);
-        hashMap[key] = value;
+        ListNode* target = keyToNode[key];
+        target->value = value;
+        refresh(target);
     }
 };
 

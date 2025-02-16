@@ -1,90 +1,63 @@
 class LRUCache {
     struct ListNode {
         int key;
-        int value;
+        int val;
         ListNode* left;
         ListNode* right;
-
-        ListNode(int key, int value) {
-            this->key = key;
-            this->value = value;
-            left = right = nullptr;
-        }
+        ListNode(int key, int val): key(key), val(val), left(nullptr), right(nullptr) {}
     };
-    int capacity;
+    unordered_map<int, ListNode*> keyToNode;
     ListNode* head;
     ListNode* tail;
-    unordered_map<int, ListNode*> keyToNode;
+    int capacity;
+
+    void remove(ListNode* target) {
+        target->left->right = target->right;
+        target->right->left = target->left;
+    }
 
     void append(ListNode* target) {
-        if(!head) {
-            head = tail = target;
-        } else {
-            tail->right = target;
-            target->left = tail;
-            target->right = nullptr;
-            tail = target;
-        }
+        tail->left->right = target;
+        target->left = tail->left;
+        target->right = tail;
+        tail->left = target;
     }
 
-    // 'target' must exist in List already
-    void remove(ListNode* target) {
-        ListNode* left = target->left;
-        ListNode* right = target->right;
-        if(left) {
-            left->right = right;
-        }
-        if(right) {
-            right->left = left;
-        }
-        if(head == target) {
-            head = right;
-        }
-        if(tail == target) {
-            tail = left;
-        }
-    }
-
-    // 'target' must exist in List already
     void refresh(ListNode* target) {
-        if(!head) {
-            head = tail = target;
-        } else {
-            remove(target);
-            append(target);
-        }
+        remove(target);
+        append(target);
     }
 public:
-    LRUCache(int capacity) {
-        this->capacity = capacity;
-        this->head = this->tail = nullptr;
+    LRUCache(int capacity) : capacity(capacity) {
+        head = new ListNode(0, 0);
+        tail = new ListNode(0, 0);
+        head->right = tail;
+        tail->left = head;
     }
     
     int get(int key) {
         if(!keyToNode.count(key)) {
             return -1;
         }
-        ListNode* target = keyToNode[key];
-        refresh(target);
-        return target->value;
+        auto node = keyToNode[key];
+        refresh(node);
+        return node->val;
     }
     
     void put(int key, int value) {
         if(!keyToNode.count(key)) {
             if(keyToNode.size() == capacity) {
-                keyToNode.erase(head->key);
-                ListNode* backup = head;
-                remove(head);
-                delete backup;
+                keyToNode.erase(head->right->key);
+                remove(head->right);
             }
             ListNode* newNode = new ListNode(key, value);
             keyToNode[key] = newNode;
             append(newNode);
             return;
         }
-        ListNode* target = keyToNode[key];
-        target->value = value;
-        refresh(target);
+        ListNode* node = keyToNode[key];
+        node->val = value;
+        refresh(node);
     }
 };
 

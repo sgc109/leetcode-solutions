@@ -1,20 +1,20 @@
 class MovingAverage {
     double sum;
     int size;
-    deque<int> dq;
+    queue<int> q;
 public:
     MovingAverage(int size): size(size), sum(0.0) {
 
     }
     
     double next(int val) {
-        dq.push_back(val);
+        q.push(val);
         sum += val;
-        if(dq.size() > size) {
-            sum -= dq.front();
-            dq.pop_front();
+        if(q.size() > size) {
+            sum -= q.front();
+            q.pop();
         }
-        return sum / dq.size();
+        return sum / q.size();
     }
 };
 

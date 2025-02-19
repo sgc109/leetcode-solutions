@@ -1,18 +1,13 @@
 class Solution {
     bool isDigits(string s) {
-        if(s.size() == 0) {
+        if(s.empty()) {
             return false;
         }
-        for(char& c : s) {
-            if(!isdigit(c)) {
-                return false;
-            }
-        }
-        return true;
+        return all_of(s.begin(), s.end(), ::isdigit);
     }
 
     bool isExponent(string s) {
-        if(s.size() == 0) {
+        if(s.empty()) {
             return false;
         }
         if(s[0] != 'e' && s[0] != 'E') {
@@ -23,13 +18,13 @@ class Solution {
     }
 
     bool isDecimalNumber(string s) { // 0.8
-        if(s.size() == 0) {
+        if(s.empty()) {
             return false;
         }
         if(s[0] == '+' || s[0] == '-') {
             s = s.substr(1, s.size() - 1);
         }
-        if(s.size() == 0) {
+        if(s.empty()) {
             return false;
         }
         if(s.back() == '.') {
@@ -39,13 +34,7 @@ class Solution {
             s = s.substr(1, s.size() - 1);
             return isDigits(s);
         } else {
-            int idxDot = -1; // 1
-            for(int i = 0; i < s.size(); ++i) { // 0.8
-                if(s[i] == '.') {
-                    idxDot = i;
-                    break;
-                }
-            }
+            int idxDot = s.find('.');
             string left = s.substr(0, idxDot); // 0
             string right = s.substr(idxDot + 1, s.size() - idxDot - 1);
             return isDigits(left) && isDigits(right);
@@ -53,7 +42,7 @@ class Solution {
     }
 
     bool isIntegerNumber(string s) {
-        if(s.size() == 0) {
+        if(s.empty()) {
             return false;
         }
         if(s[0] == '+' || s[0] == '-') {
@@ -63,13 +52,7 @@ class Solution {
     }
 public:
     bool isNumber(string s) { // "0.8"
-        int idxOfE = -1;
-        for(int i = 0; i < s.size(); ++i) {
-            if(s[i] == 'e' || s[i] == 'E') {
-                idxOfE = i;
-                break;
-            }
-        }
+        int idxOfE = max((int)s.find('e'), (int)s.find('E'));
         if(idxOfE == -1) {
             return isIntegerNumber(s) || isDecimalNumber(s);
         } else {

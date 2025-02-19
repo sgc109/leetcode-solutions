@@ -1,9 +1,6 @@
 class Solution {
     bool isDigits(string s) {
-        if(s.empty()) {
-            return false;
-        }
-        return all_of(s.begin(), s.end(), ::isdigit);
+        return !s.empty() && all_of(s.begin(), s.end(), ::isdigit);
     }
 
     bool isExponent(string s) {
@@ -13,7 +10,7 @@ class Solution {
         if(s[0] != 'e' && s[0] != 'E') {
             return false;
         }
-        s = s.substr(1, s.size() - 1);
+        s = s.substr(1);
         return isIntegerNumber(s);
     }
 
@@ -22,7 +19,7 @@ class Solution {
             return false;
         }
         if(s[0] == '+' || s[0] == '-') {
-            s = s.substr(1, s.size() - 1);
+            s = s.substr(1);
         }
         if(s.empty()) {
             return false;
@@ -31,12 +28,12 @@ class Solution {
             s.pop_back();
             return isDigits(s);
         } else if(s[0] == '.') {
-            s = s.substr(1, s.size() - 1);
+            s = s.substr(1);
             return isDigits(s);
         } else {
             int idxDot = s.find('.');
             string left = s.substr(0, idxDot); // 0
-            string right = s.substr(idxDot + 1, s.size() - idxDot - 1);
+            string right = s.substr(idxDot + 1);
             return isDigits(left) && isDigits(right);
         }
     }
@@ -46,7 +43,7 @@ class Solution {
             return false;
         }
         if(s[0] == '+' || s[0] == '-') {
-            s = s.substr(1, s.size() - 1);
+            s = s.substr(1);
         }
         return isDigits(s);
     }
@@ -57,7 +54,7 @@ public:
             return isIntegerNumber(s) || isDecimalNumber(s);
         } else {
             string left = s.substr(0, idxOfE);
-            string right = s.substr(idxOfE, s.size() - idxOfE);
+            string right = s.substr(idxOfE);
             return (isIntegerNumber(left) || isDecimalNumber(left)) && isExponent(right);
         }
     }

@@ -52,26 +52,26 @@ q: []
         if(N == 1) {
             return 1;
         }
-        queue<pair<pair<int, int>, int>> q;
-        q.push({{0, 0}, 1});
+        queue<pair<int, int>> q;
+        q.push({0, 0});
+        grid[0][0] = 1;
         while(!q.empty()) {
             auto cur = q.front();
             q.pop();
-            int r = cur.first.first; // 0
-            int c = cur.first.second; // 1
-            int dist = cur.second;
+            int r = cur.first; // 0
+            int c = cur.second; // 1
 
             for(int i = 0; i < 8; ++i) {
-                int nr = r + dr[i]; // 1
-                int nc = c + dc[i]; // 2
+                int nr = r + "00122210"[i] - '1'; // 1
+                int nc = c + "12221000"[i] - '1'; // 2
                 if(!inRange(nr, nc) || grid[nr][nc]) {
                     continue;
                 }
                 if(nr == N - 1 && nc == N - 1) {
-                    return dist + 1;
+                    return grid[r][c] + 1;
                 }
-                grid[nr][nc] = 1;
-                q.push({{nr, nc}, dist + 1});
+                grid[nr][nc] = grid[r][c] + 1;
+                q.push({nr, nc});
             }
         }
         return -1;

@@ -24,16 +24,17 @@ class Solution {
         return parent[u] = parent[u] == u ? u : find(parent[u]);
     }
 
-    void merge(int u, int v){
+    int merge(int u, int v){
         u = find(u), v = find(v); // 3, 2
         if(u == v) {
-            return;
+            return sizes[u];
         }
         if(sizes[u] > sizes[v]) {
             swap(u, v);
         }
         parent[u] = v;
         sizes[v] += sizes[u];
+        return sizes[v];
     }
     // [0, 2] [1] [3]
 public:
@@ -46,6 +47,7 @@ public:
         for(int i = 0; i < R * C; ++i) {
             parent[i] = i;
         }
+        int ans = 1;
         for(int i = 0; i < R * C; ++i) { // i =1
             int r = i / C; // 0
             int c = i % R; // 1
@@ -53,13 +55,12 @@ public:
                 continue;
             }
             if(r < R - 1 && grid[r + 1][c]) {
-                merge(i, getId(r + 1, c)); // merge(1, 3)
+                ans = max(ans, merge(i, getId(r + 1, c))); // merge(1, 3)
             }
             if(c < C - 1 && grid[r][c + 1]) {
-                merge(i, getId(r, c + 1)); // merge(0, 1)
+                ans = max(ans, merge(i, getId(r, c + 1))); // merge(0, 1)
             }
         }
-        int ans = 1;
         for(int i = 0; i < R * C; ++i) {
             ans = max(ans, sizes[i]);
         }

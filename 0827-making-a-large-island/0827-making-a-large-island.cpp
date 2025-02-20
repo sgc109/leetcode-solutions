@@ -1,75 +1,91 @@
+/*
+0 1
+1 0
+
+*/
+
 class Solution {
-    int N;
-    int visited[503][503];
-    int groupId[503][503];
-    int groupSize[250003];
-    
-    int dy[4] = {0, -1, 1, 0};
-    int dx[4] = {-1, 0, 0, 1};
-    
+    int R, C;
+    vector<int> parent;
+    vector<int> sizes;
+
+    int dr[4] = {0, -1, 1, 0};
+    int dc[4] = {-1, 0, 0, 1};
+
     bool inRange(int r, int c) {
-        return 0 <= r && r < N && 0 <= c && c < N;
+        return 0 <= r && r < R && 0 <= c && c < C;
+    }
+
+    int getId(int r, int c) {
+        return r * C + c; // [0, R * C)
     }
     
-    int dfs(int r, int c, int newId, vector<vector<int>>& grid) {
-        if(!inRange(r, c) || visited[r][c] || grid[r][c] == 0) {
-            return 0;
-        }
-        visited[r][c] = 1;
-        groupId[r][c] = newId;
-        
-        int size = 1;
-        for(int k = 0; k < 4; ++k) {
-            int nr = r + dy[k];
-            int nc = c + dx[k];
-            size += dfs(nr, nc, newId, grid);
-        }
-        
-        return size;
+    int find(int u) {
+        return parent[u] = parent[u] == u ? u : find(parent[u]);
     }
+
+    void merge(int u, int v){
+        u = find(u), v = find(v); // 3, 2
+        if(u == v) {
+            return;
+        }
+        if(sizes[u] > sizes[v]) {
+            swap(u, v);
+        }
+        parent[u] = v;
+        sizes[v] += sizes[u];
+    }
+    // [0, 2] [1] [3]
 public:
-    int largestIsland(vector<vector<int>>& grid) {
-        N = grid.size();
-  
-        int groupCounter = 0;
-        for(int i = 0; i < N; ++i) {
-            for(int j = 0; j < N; ++j) {
-                if(grid[i][j] == 0 || visited[i][j]) {
-                    continue;
-                }
-                vector<pair<int,int>> cells;
-                int size = dfs(i, j, groupCounter, grid);
-                groupSize[groupCounter++] = size;
+    int largestIsland(vector<vector<int>>& grid) { // [[1,0],[0,1]]
+        R = grid.size(); // 2
+        C = grid[0].size(); // 2
+
+        parent = vector<int>(R * C); // [2, 2, 2, 3]
+        sizes = vector<int>(R * C, 1); // [1, 1, 3, 1]
+        for(int i = 0; i < R * C; ++i) {
+            parent[i] = i;
+        }
+        for(int i = 0; i < R * C; ++i) { // i =1
+            int r = i / C; // 0
+            int c = i % R; // 1
+            if(!grid[r][c]) {
+                continue;
+            }
+            if(r < R - 1 && grid[r + 1][c]) {
+                merge(i, getId(r + 1, c)); // merge(1, 3)
+            }
+            if(c < C - 1 && grid[r][c + 1]) {
+                merge(i, getId(r, c + 1)); // merge(0, 1)
             }
         }
-        
-        if(groupCounter == 0) {
-            return 1;
+        int ans = 1;
+        for(int i = 0; i < R * C; ++i) {
+            ans = max(ans, sizes[i]);
         }
-        
-        int ans = 0;
-        for(int i = 0; i < N; ++i) {
-            for(int j = 0; j < N; ++j) {
-                if(grid[i][j] == 1) {
-                    continue;
-                }
-                unordered_set<int> adjGroupIds;
-                for(int k = 0; k < 4; ++k) {
-                    int ni = i + dy[k];
-                    int nj = j + dx[k];
-                    if(!inRange(ni, nj) || grid[ni][nj] == 0) {
-                        continue;
-                    }
-                    adjGroupIds.insert(groupId[ni][nj]);
-                }
-                int sum = 1;
-                for(auto grp : adjGroupIds) {
-                    sum += groupSize[grp];
-                }
-                ans = max(ans, sum);
+        for(int i = 0; i < R * C; ++i) {
+            int r = i / C;
+            int c = i % R;
+            
+            if(grid[r][c]) {
+                continue;
             }
+
+            unordered_set<int> set;
+            for(int j = 0; j < 4; ++j) {
+                int nr = r + dr[j];
+                int nc = c + dc[j];
+                if(inRange(nr, nc) && grid[nr][nc]) {
+                    set.insert(find(getId(nr, nc)));
+                }
+            }
+            int tmpSize = 1;
+            for(auto it : set) {
+                tmpSize += sizes[it];
+            }
+            ans = max(ans, tmpSize);
         }
-        
-        return ans == 0 ? N * N : ans;
+
+        return ans;
     }
 };

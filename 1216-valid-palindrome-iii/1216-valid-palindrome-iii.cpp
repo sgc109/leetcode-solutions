@@ -1,23 +1,32 @@
-/*
-abcdeca
-
-abcdeca
-acedcba
-
-acdca
-
-*/
-
 class Solution {
+    vector<vector<int>> dp;
 public:
-    bool isValidPalindrome(string s, int k) {
+/*
+N = 9
+9 9 9 9 9 9 9 9 9
+9 9 9 9 9 9 9 9 9
+9 9 9 9 9 9 9 9 9
+9 9 9 9 9 9 9 9 9
+9 9 9 9 9 9 9 9 9
+9 9 9 9 9 9 9 9 9
+9 9 9 9 9 9 9 9 9
+9 9 9 9 9 9 9 0 9
+9 9 9 9 9 9 9 9 0
+*/
+    bool isValidPalindrome(string s, int k) { // s = "aaabaabaa", k = 1
         int N = s.size();
-        vector<vector<int>> dp = vector<vector<int>>(2, vector<int>(N + 1, 0));
-        for(int i = 0; i < N; ++i) {
-            for(int j = 0; j < N; ++j) {
-                dp[(i + 1) % 2][j + 1] = s[i] == s[N - 1 - j] ? dp[i % 2][j] + 1 : max(dp[i % 2][j + 1], dp[(i + 1) % 2][j]);
+        dp = vector<vector<int>>(2, vector<int>(s.size(), 0));
+        
+        for(int i = N - 1; i >= 0; --i) {
+            for(int j = i + 1; j < N; ++j) {
+                if(s[i] == s[j]) {
+                    dp[i & 1][j] = dp[(i + 1) & 1][j - 1];
+                } else {
+                    dp[i & 1][j] = min(dp[(i + 1) & 1][j], dp[i & 1][j - 1]) + 1;
+                }
             }
         }
-        return N - dp[N % 2][N] <= k;
+
+        return dp[0][N - 1] <= k;
     }
 };

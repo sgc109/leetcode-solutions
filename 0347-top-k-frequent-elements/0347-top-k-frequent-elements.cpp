@@ -1,13 +1,3 @@
-/*
-1 <= len(nums) <= 10^5
--10^4 <= nums[i] <= 10^4
-1 <= k <= len(nums)
-always unique answer
-any order
-
-
-*/
-
 class Solution {
 public:
     vector<int> topKFrequent(vector<int>& nums, int k) {
@@ -15,16 +5,20 @@ public:
         for(int num : nums) {
             counter[num]++;
         }
-        vector<pair<int, int>> freqToNum;
+        vector<vector<int>> buckets(nums.size() + 1, vector<int>());
         for(auto it : counter) {
-            freqToNum.push_back({it.second, it.first});
-        }
-        sort(freqToNum.begin(), freqToNum.end());
-        vector<int> ans;
-        for(int i = 0; i < k; ++i) {
-            ans.push_back(freqToNum[freqToNum.size() - 1 - i].second);
+            buckets[it.second].push_back(it.first);
         }
 
+        vector<int> ans;
+        for(int i = nums.size(); i >= 1 && ans.size() < k; --i) {
+            for(int num : buckets[i]) {
+                ans.push_back(num);
+            }
+            if(ans.size() == k) {
+                break;
+            }
+        }
         return ans;
     }
 };

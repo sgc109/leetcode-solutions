@@ -8,44 +8,36 @@
  * };
  */
 class Solution {
-    vector<TreeNode*> rootToP; // [3, 5]
-    vector<TreeNode*> rootToQ; // [3, 1]
-    TreeNode *p, *q; // 5, 1
-     // cur = 3, 1
-     // fromRoot = [3, 1]
-    void dfs(TreeNode* cur, vector<TreeNode*>& fromRoot) {
+    bool dfs(TreeNode* cur, TreeNode* target, vector<TreeNode*>& path) {
         if(!cur) {
-            return;
+            return false;
         }
-        fromRoot.push_back(cur);
-        if(cur == p) {
-            rootToP = fromRoot;
-        } else if(cur == q) {
-            rootToQ = fromRoot;
+        path.push_back(cur);
+        if(cur == target) {
+            return true;;
         }
-
-        if(rootToP.size() > 0 && rootToQ.size() > 0) {
-            return;
+        if(dfs(cur->left, target, path)) {
+            return true;
         }
+        if(dfs(cur->right, target, path)) {
+            return true;
+        }
+        path.pop_back();
 
-        dfs(cur->left, fromRoot);
-        dfs(cur->right, fromRoot);
-
-        fromRoot.pop_back();
+        return false;
     }
 public:
-    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) { // 3, 5, 1
-        this->p = p;
-        this->q = q;
-        
-        vector<TreeNode*> fromRoot;
-        dfs(root, fromRoot);
-        int i;
-        for(i = 0; i < min(size(rootToP), size(rootToQ)); ++i) { // i = 1
-            if(rootToP[i]->val != rootToQ[i]->val) {
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        vector<TreeNode*> path1, path2;
+        dfs(root, p, path1);
+        dfs(root, q, path2);
+        int pos = 0;
+        while(pos < path1.size() && pos < path2.size()) {
+            if(path1[pos] != path2[pos]) {
                 break;
             }
+            ++pos;
         }
-        return rootToP[i - 1];
+        return path1[pos - 1];
     }
 };

@@ -10,7 +10,7 @@ class Solution {
         }
         while (l < r) {
             if (s[l] != s[r]) {
-            return false;
+                return false;
             }
             ++l;
             --r;
@@ -23,10 +23,10 @@ public:
         int r = s.size() - 1;              // 1
         while (l < r) {
             if (s[l] == s[r]) {
-            ++l;
-            --r;
+                ++l;
+                --r;
             } else {
-            return isPalin(s, l + 1, r) || isPalin(s, l, r - 1);
+                return isPalin(s, l + 1, r) || isPalin(s, l, r - 1);
             }
         }
         return true;

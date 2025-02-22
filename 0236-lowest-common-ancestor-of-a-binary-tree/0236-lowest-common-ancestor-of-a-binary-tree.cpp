@@ -8,36 +8,41 @@
  * };
  */
 class Solution {
-    bool dfs(TreeNode* cur, TreeNode* target, vector<TreeNode*>& path) {
-        if(!cur) {
-            return false;
-        }
-        path.push_back(cur);
-        if(cur == target) {
-            return true;;
-        }
-        if(dfs(cur->left, target, path)) {
-            return true;
-        }
-        if(dfs(cur->right, target, path)) {
-            return true;
-        }
-        path.pop_back();
-
-        return false;
-    }
 public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        vector<TreeNode*> path1, path2;
-        dfs(root, p, path1);
-        dfs(root, q, path2);
-        int pos = 0;
-        while(pos < path1.size() && pos < path2.size()) {
-            if(path1[pos] != path2[pos]) {
-                break;
+        unordered_map<TreeNode*, TreeNode*> childToParent;
+        queue<TreeNode*> queue;
+        queue.push(root);
+        while(!queue.empty()) {
+            auto cur = queue.front();
+            queue.pop();
+            if(cur->left) {
+                childToParent[cur->left] = cur;
+                queue.push(cur->left);
             }
-            ++pos;
+            if(cur->right) {
+                childToParent[cur->right] = cur;
+                queue.push(cur->right);
+            }  
         }
-        return path1[pos - 1];
+        unordered_set<TreeNode*> visited;
+        
+        while(p || q) {
+            if(p && visited.count(p)) {
+                return p;
+            }
+            visited.insert(p);
+            if(q && visited.count(q)) {
+                return q;
+            }
+            visited.insert(q);
+            if(p) {
+                p = childToParent[p];
+            }
+            if(q) {
+                q = childToParent[q];
+            }
+        }
+        return nullptr;
     }
 };

@@ -1,33 +1,27 @@
 class Solution {
-    void swapRange(vector<int>& nums, int l, int r) {
-        int len = r - l + 1;
-        for(int i = 0; i < len / 2; ++i) {
-            swap(nums[l + i], nums[r - i]);
-        }
-    }
 public:
-    void nextPermutation(vector<int>& nums) {
-        int l = -1; // 0
-        for(int i = size(nums) - 1; i >= 1; --i) {
-            if(nums[i - 1] < nums[i]) {
-                l = i - 1;
+    void nextPermutation(vector<int>& nums) { // [5 4 1 2 2]
+        int breaker = -1; // 1                        ^ ^ ^
+        for(int i = nums.size() - 2; i >= 0; --i) {
+            if(nums[i] < nums[i + 1]) {
+                breaker = i;
                 break;
             }
         }
-        if(l == -1) {
-            swapRange(nums, 0, size(nums) - 1);
-            return;
-        }
-
-        int firstSameOrLess = size(nums);
-        for(int i = l + 1; i < size(nums); ++i) {
-            if(nums[l] >= nums[i]) {
-                firstSameOrLess = i;
-                break;
+        if(breaker != -1) {
+            for(int i = nums.size() - 1; i > breaker; --i) {
+                if(nums[breaker] < nums[i]) {
+                    swap(nums[breaker], nums[i]);
+                    break;
+                }
             }
         }
-        int nextIdx = firstSameOrLess - 1;
-        swap(nums[l], nums[nextIdx]);
-        swapRange(nums, l + 1, size(nums) - 1);
+        int pos = 0;
+        while(breaker + 1 + pos < nums.size() - 1 - pos) {
+            swap(nums[breaker + 1 + pos], nums[nums.size() - 1 - pos]);
+            ++pos;
+        }
+        // 5 4 1 2 2
     }
 };
+

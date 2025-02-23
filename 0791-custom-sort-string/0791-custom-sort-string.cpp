@@ -1,21 +1,20 @@
 class Solution {
-    int counter[26];
 public:
     string customSortString(string order, string s) {
+        unordered_map<char, int> counter;
         for(char c : s) {
-            counter[c - 'a']++;
+            counter[c]++;
         }
         string ans = "";
         for(char c : order) {
-            while(counter[c - 'a']) {
+            while(counter[c]--) {
                 ans += c;
-                counter[c - 'a']--;
             }
+            counter.erase(c);
         }
-        for(int i = 0; i < 26; ++i) {
-            while(counter[i]) {
-                ans += ('a' + i);
-                counter[i]--;
+        for(auto it : counter) {
+            while(it.second--) {
+                ans += it.first;
             }
         }
         return ans;

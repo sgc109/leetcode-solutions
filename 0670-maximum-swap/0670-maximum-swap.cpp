@@ -1,28 +1,22 @@
 class Solution {
 public:
     int maximumSwap(int num) {
-        vector<vector<int>> digitToIndexes(10, vector<int>());
         string numStr = to_string(num);
-        for(int i  = size(numStr) - 1; i >=0 ; --i) {
-            digitToIndexes[numStr[i] - '0'].push_back(i);
-        }
-        
-        int maxDigit = 9;
-        for(int i = 0; i < size(numStr); ++i) {
-            int digit = numStr[i] - '0';
-
-            while(digitToIndexes[maxDigit].size() == 0) {
-                maxDigit--;
-            }
-
-            if(digit < maxDigit) {
-                swap(numStr[i], numStr[digitToIndexes[maxDigit][0]]);
-                return stoi(numStr);
-            }
-            
-            digitToIndexes[digit].pop_back();
+        unordered_map<int, deque<int>> digitToIndices;
+        for(int i = 0; i < numStr.size(); ++i) {
+            digitToIndices[numStr[i] - '0'].push_back(i);
         }
 
+        for(int i = 0; i < numStr.size(); ++i) {
+            for(int j = 9; j > numStr[i] - '0'; --j) {
+                if(!digitToIndices[j].empty()) {
+                    int idxToSwap = digitToIndices[j].back();
+                    swap(numStr[i], numStr[idxToSwap]);
+                    return stoi(numStr);
+                }
+            }
+            digitToIndices[numStr[i] - '0'].pop_front();
+        }
         return num;
     }
 };

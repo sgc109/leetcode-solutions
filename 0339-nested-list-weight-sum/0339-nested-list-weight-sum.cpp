@@ -28,20 +28,28 @@
  * };
  */
 class Solution {
-    int calcSumWithDepth(vector<NestedInteger>& nestedList, int depth) { // nestedList = [6], depth = 3
-        int ret = 0; // 27
-        for(auto nested : nestedList) { // nested = 1
-            if(nested.isInteger()) {
-                ret += nested.getInteger() * depth;
+public:
+    int depthSum(vector<NestedInteger>& nestedList) {
+        int ans = 0;
+        queue<pair<NestedInteger, int>> q;
+        for(auto nestedInt : nestedList) {
+            q.push({nestedInt, 1});
+        }
+        while(!q.empty()) {
+            auto it = q.front();
+            q.pop();
+            
+            auto nestedInt = it.first;
+            int depth = it.second;
+            
+            if(nestedInt.isInteger()) {
+                ans += nestedInt.getInteger() * depth;
             } else {
-                ret += calcSumWithDepth(nested.getList(), depth + 1);
+                for(auto next : nestedInt.getList()) {
+                    q.push({next, depth + 1});
+                }
             }
         }
-
-        return ret;
-    }
-public:
-    int depthSum(vector<NestedInteger>& nestedList) { // [0]
-        return calcSumWithDepth(nestedList, 1); // 10
+        return ans;
     }
 };

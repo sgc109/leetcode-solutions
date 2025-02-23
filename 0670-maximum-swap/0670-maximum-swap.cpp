@@ -1,21 +1,18 @@
 class Solution {
 public:
     int maximumSwap(int num) {
+        vector<int> lastIndex = vector<int>(10, -1);
         string numStr = to_string(num);
-        unordered_map<int, deque<int>> digitToIndices;
         for(int i = 0; i < numStr.size(); ++i) {
-            digitToIndices[numStr[i] - '0'].push_back(i);
+            lastIndex[numStr[i] - '0'] = i;
         }
-
         for(int i = 0; i < numStr.size(); ++i) {
             for(int j = 9; j > numStr[i] - '0'; --j) {
-                if(!digitToIndices[j].empty()) {
-                    int idxToSwap = digitToIndices[j].back();
-                    swap(numStr[i], numStr[idxToSwap]);
+                if(i < lastIndex[j]) {
+                    swap(numStr[i], numStr[lastIndex[j]]);
                     return stoi(numStr);
                 }
             }
-            digitToIndices[numStr[i] - '0'].pop_front();
         }
         return num;
     }

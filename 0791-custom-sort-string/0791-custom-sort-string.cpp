@@ -12,9 +12,11 @@ public:
             }
             counter.erase(c);
         }
-        for(auto it : counter) {
-            while(it.second--) {
-                ans += it.first;
+        for(auto& it : counter) {
+            char c = it.first;
+            int& count = it.second;
+            while(count--) {
+                ans += c;
             }
         }
         return ans;

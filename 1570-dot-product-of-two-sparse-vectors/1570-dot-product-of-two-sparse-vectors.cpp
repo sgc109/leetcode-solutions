@@ -1,7 +1,6 @@
 class SparseVector {
-public:
     unordered_map<int, int> map; // {0 -> 1, 3 -> 2, 4 -> 3} | {1 -> 3, 3 -> 4}
-
+public:
     SparseVector(vector<int> &nums) { // 1,0,0,2,3 | 0,3,0,4,0
         for(int i = 0; i < nums.size(); ++i) {
             if(nums[i]) {
@@ -9,17 +8,23 @@ public:
             }
         } 
     }
+
+    int getNonZeroCount() {
+        return map.size();
+    }
+
+    int getValue(int index) {
+        return map[index];
+    }
     
     // Return the dotProduct of two sparse vectors
     int dotProduct(SparseVector& vec) {
-        auto map1 = this->map;
-        auto map2 = vec.map;
-        if(map1.size() > map2.size()) {
-            swap(map1, map2);
+        if(map.size() > vec.getNonZeroCount()) {
+            return vec.dotProduct(*this);
         }
-        int acc = 0; // 8
-        for(auto it : map1) {
-            acc += map2[it.first] * it.second;
+        int acc = 0;
+        for(auto it : map) {
+            acc += vec.getValue(it.first) * it.second;
         }
         return acc;
     }

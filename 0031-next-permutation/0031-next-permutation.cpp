@@ -16,12 +16,7 @@ public:
                 }
             }
         }
-        int pos = 0;
-        while(breaker + 1 + pos < nums.size() - 1 - pos) {
-            swap(nums[breaker + 1 + pos], nums[nums.size() - 1 - pos]);
-            ++pos;
-        }
-        // 5 4 1 2 2
+        reverse(nums.begin() + breaker + 1, nums.end());
     }
 };
 

@@ -1,19 +1,16 @@
 class Solution {
 public:
-    // "A man, a plan, a canal: Panama"
-    //                   ^            
     bool isPalindrome(string s) {
-        int l = 0; // 0
-        int r = s.size() - 1; // 29
+        int l = 0;
+        int r = s.size() - 1;
         while(l < r) {
-            while(l < r && !isalnum(s[l])) {
-                ++l;   
+            if(!isalnum(s[l])) {
+                ++l;
+                continue;
             }
-            while(l < r && !isalnum(s[r])) {
+            if(!isalnum(s[r])) {
                 --r;
-            } 
-            if(l == r) {
-                return true;
+                continue;
             }
             if(tolower(s[l]) != tolower(s[r])) {
                 return false;
@@ -21,7 +18,6 @@ public:
             ++l;
             --r;
         }
-        
         return true;
     }
 };

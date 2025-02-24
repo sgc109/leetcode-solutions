@@ -12,13 +12,22 @@
 class Solution {
 public:
     int rangeSumBST(TreeNode* root, int low, int high) {
-        int sum = root->val >= low && root->val <= high ? root->val : 0;
-        if(root->left && low <= root->val) {
-            sum += rangeSumBST(root->left, low, high);
+        stack<TreeNode*> stack;
+        stack.push(root);
+        int ans = 0;
+        while(!stack.empty()) {
+            auto cur = stack.top();
+            stack.pop();
+            if(low <= cur->val && cur->val <= high) {
+                ans += cur->val;
+            }
+            if(cur->left && low <= cur->val) {
+                stack.push(cur->left);
+            }
+            if(cur->right && cur->val <= high) {
+                stack.push(cur->right);
+            }
         }
-        if(root->right && root->val <= high) {
-            sum += rangeSumBST(root->right, low, high);
-        }
-        return sum;
+        return ans;
     }
 };

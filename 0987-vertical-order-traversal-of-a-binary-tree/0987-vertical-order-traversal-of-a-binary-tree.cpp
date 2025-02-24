@@ -10,51 +10,43 @@
  * };
  */
 class Solution {
+    struct Position {
+        TreeNode* node;
+        int col;
+        bool operator<(const Position& rhs) const {
+            return node->val > (rhs.node)->val;
+        }  
+    };
 public:
     vector<vector<int>> verticalTraversal(TreeNode* root) {
-        // 1. BFS
-
-        // key: row, col | value: val
-        map<pair<int,int>, multiset<int>> map1;
-
-        queue<pair<TreeNode*, pair<int, int>>> q;
-        q.push({root, {0, 0}});
-        while(q.size() > 0) {
-            auto cur = q.front();
-            q.pop();
-            auto curNode = cur.first;
-            int curRow = cur.second.first;
-            int curCol = cur.second.second;
-
-            map1[{curRow, curCol}].insert(curNode->val);
-
-            if(curNode->left != nullptr) {
-                q.push({curNode->left, {curRow + 1, curCol - 1}});
+        priority_queue<Position> pq;
+        int minCol = INT_MAX;
+        int maxCol = INT_MIN;
+        unordered_map<int, vector<int>> colToVals;
+        pq.push(Position{root, 0});
+        while(!pq.empty()) {
+            vector<Position> nextPositions;
+            while(!pq.empty()) {
+                auto cur = pq.top();
+                pq.pop();
+                colToVals[cur.col].push_back((cur.node)->val);
+                if((cur.node)->left) {
+                    nextPositions.push_back(Position{(cur.node)->left, cur.col - 1});
+                }
+                if((cur.node)->right) {
+                    nextPositions.push_back(Position{(cur.node)->right, cur.col + 1});
+                }
+                minCol = min(minCol, cur.col);
+                maxCol = max(maxCol, cur.col);
             }
-            if(curNode->right != nullptr) {
-                q.push({curNode->right, {curRow + 1, curCol + 1}});
-            }
-        }
-
-        // 2. convert map1 -> map2
-
-        // key: col | value: val
-        map<int, vector<int>> map2;
-
-        for(auto it : map1) {
-            int col = it.first.second;
-            for(int val : it.second) {
-                map2[col].push_back(val);
+            for(auto position : nextPositions) {
+                pq.push(position);
             }
         }
-
-        // 3. convert map2 -> 2d vector
         vector<vector<int>> ans;
-
-        for(auto it : map2) {
-            ans.push_back(it.second);
+        for(int i = minCol; i <= maxCol; ++i) {
+            ans.push_back(colToVals[i]);
         }
-
         return ans;
     }
 };

@@ -12,25 +12,31 @@
 class Solution {
 public:
     vector<int> rightSideView(TreeNode* root) {
-        if(root == nullptr) {
-            return vector<int>();
+        if(!root) {
+            return {};
         }
-        vector<TreeNode*> list = {root};
-        vector<int> ans;
-        while(list.size() > 0) {
-            ans.push_back(list.back()->val);
-            vector<TreeNode*> tmpList;
-            for(auto node : list) {
-                if(node->left != nullptr) {
-                    tmpList.push_back(node->left);
-                }
-                if(node->right != nullptr) {
-                    tmpList.push_back(node->right);
-                }
+        unordered_map<int,int> levelToVal;
+        queue<pair<TreeNode*, int>> q;
+        q.push({root, 0});
+        int maxLevel = 0;
+        while(!q.empty()) {
+            auto cur = q.front();
+            q.pop();
+            auto curNode = cur.first;
+            int curLevel = cur.second;
+            levelToVal[curLevel] = curNode->val;
+            maxLevel = max(maxLevel, curLevel);
+            if(curNode->left) {
+                q.push({curNode->left, curLevel + 1});
             }
-            list = tmpList;
+            if(curNode->right) {
+                q.push({curNode->right, curLevel + 1});
+            }
         }
-        
+        vector<int> ans;
+        for(int i = 0; i <= maxLevel; ++i) {
+            ans.push_back(levelToVal[i]);
+        }
         return ans;
     }
 };

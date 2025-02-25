@@ -18,6 +18,6 @@ public:
             ans += '1';
         }
         reverse(begin(ans), end(ans));
-        return ans == "" ? "0" : ans;
+        return ans;
     }
 };

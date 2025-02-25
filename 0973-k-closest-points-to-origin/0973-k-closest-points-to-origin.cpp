@@ -1,24 +1,27 @@
 class Solution {
     struct Point {
-        int x, y;
-        bool operator<(const Point &rhs) const {
+        int x;
+        int y;
+        bool operator<(const Point& rhs) const {
             return x * x + y * y < rhs.x * rhs.x + rhs.y * rhs.y;
         }
     };
 public:
     vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
-        vector<Point> pointsVec;
-        for(auto point : points) {
-            pointsVec.push_back(Point{point[0], point[1]});
+        priority_queue<Point> pq;
+        for(int i = 0; i < points.size(); ++i) {
+            pq.push(Point{points[i][0], points[i][1]});
+            if(pq.size() > k) {
+                pq.pop();
+            }
         }
-        sort(pointsVec.begin(), pointsVec.end());
-
         vector<vector<int>> ans;
-        for(int i = 0; i < k; ++i) {
-            auto point = pointsVec[i];
-            ans.push_back({point.x, point.y});
+        while(!pq.empty()) {
+            auto top = pq.top();
+            pq.pop();
+            ans.push_back({top.x, top.y});
         }
-
+        reverse(ans.begin(), ans.end());
         return ans;
     }
 };

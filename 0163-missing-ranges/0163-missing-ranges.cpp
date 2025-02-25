@@ -4,16 +4,17 @@ public:
         if(nums.empty()) {
             return {{lower, upper}};
         }
-        int prev = lower - 1;
         vector<vector<int>> ans;
-        for(int i = 0; i < nums.size(); ++i) {
-            if(prev + 1 <= nums[i] - 1) {
-                ans.push_back({prev + 1, nums[i] - 1});
-            }
-            prev = nums[i];
+        if(lower < nums[0]) {
+            ans.push_back({lower, nums[0] - 1});
         }
-        if(prev + 1 <= upper) {
-            ans.push_back({prev + 1, upper});
+        for(int i = 0; i < nums.size() - 1; ++i) {
+            if(nums[i + 1] - nums[i] > 1) {
+                ans.push_back({nums[i] + 1, nums[i + 1] - 1});
+            }
+        }
+        if(nums.back() < upper) {
+            ans.push_back({nums.back() + 1, upper});
         }
         return ans;
     }

@@ -23,31 +23,33 @@ public:
 */
 
 class Solution {
-    void connect(Node* node1, Node* node2) {
-        node1->right = node2;
-        node2->left = node1;
+    void connect(Node* a, Node* b) {
+        a->right = b;
+        b->left = a;
     }
-    pair<Node*, Node*> dfs(Node* cur) {
-        pair<Node*, Node*> curPair = {cur, cur};
+
+    pair<Node*, Node*> convert(Node* cur) {
+        Node* left = cur;
+        Node* right = cur;
         if(cur->left) {
-            auto leftPair = dfs(cur->left);
-            curPair.first = leftPair.first;
-            connect(leftPair.second, cur);
+            auto leftHeadAndTail = convert(cur->left);
+            connect(leftHeadAndTail.second, cur);
+            left = leftHeadAndTail.first;
         }
         if(cur->right) {
-            auto rightPair = dfs(cur->right);
-            curPair.second = rightPair.second;
-            connect(cur, rightPair.first);
+            auto rightHeadAndTail = convert(cur->right);
+            connect(cur, rightHeadAndTail.first);
+            right = rightHeadAndTail.second;
         }
-        return curPair;
+        return {left, right};
     }
 public:
     Node* treeToDoublyList(Node* root) {
         if(!root) {
             return root;
         }
-        auto pair = dfs(root);
-        connect(pair.second, pair.first);
-        return pair.first;
+        auto headAndTail = convert(root);
+        connect(headAndTail.second, headAndTail.first);
+        return headAndTail.first;
     }
 };

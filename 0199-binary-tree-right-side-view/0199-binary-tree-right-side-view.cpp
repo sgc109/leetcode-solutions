@@ -15,17 +15,19 @@ public:
         if(!root) {
             return {};
         }
-        unordered_map<int,int> levelToVal;
+        vector<int> ans;
         queue<pair<TreeNode*, int>> q;
         q.push({root, 0});
-        int maxLevel = 0;
+        int prevVal;
         while(!q.empty()) {
             auto cur = q.front();
             q.pop();
             auto curNode = cur.first;
             int curLevel = cur.second;
-            levelToVal[curLevel] = curNode->val;
-            maxLevel = max(maxLevel, curLevel);
+            if(ans.size() == curLevel - 1) {
+                ans.push_back(prevVal);
+            }
+            prevVal = curNode->val;
             if(curNode->left) {
                 q.push({curNode->left, curLevel + 1});
             }
@@ -33,10 +35,7 @@ public:
                 q.push({curNode->right, curLevel + 1});
             }
         }
-        vector<int> ans;
-        for(int i = 0; i <= maxLevel; ++i) {
-            ans.push_back(levelToVal[i]);
-        }
+        ans.push_back(prevVal);
         return ans;
     }
 };

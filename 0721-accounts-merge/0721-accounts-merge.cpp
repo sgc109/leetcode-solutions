@@ -2,6 +2,7 @@ class Solution {
     int N;
     vector<int> parents;
     vector<int> sizes;
+
     int find(int u) {
         return parents[u] = parents[u] == u ? u : find(parents[u]);
     }
@@ -19,12 +20,15 @@ class Solution {
     }
 public:
     vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+        // 1. Initialize DSU
         N = accounts.size();
         parents = vector<int>(N);
         sizes = vector<int>(N, 1);
         for(int i = 0; i < N; ++i) {
             parents[i] = i;
         }
+
+        // 2. Merge accounts with common email
         unordered_map<string, int> emailToMemberId;
         for(int i = 0; i < N; ++i) {
             for(int j = 1; j < accounts[i].size(); ++j) {
@@ -36,6 +40,8 @@ public:
                 }
             }
         }
+
+        // 3. Collect all emails for each group
         unordered_map<int, set<string>> groupIdToEmails;
         for(int i = 0; i < N; ++i) {
             int groupId = find(i);
@@ -44,6 +50,7 @@ public:
             }
         }
 
+        // 4. Convert to answer format
         vector<vector<string>> ans;
         for(auto it : groupIdToEmails) {
             int groupId = it.first;

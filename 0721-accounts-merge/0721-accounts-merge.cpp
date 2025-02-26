@@ -20,7 +20,7 @@ class Solution {
     }
 public:
     vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
-        // 1. Initialize DSU
+        // 1. Initialize DSU - O(N), O(N)
         N = accounts.size();
         parents = vector<int>(N);
         sizes = vector<int>(N, 1);
@@ -28,7 +28,7 @@ public:
             parents[i] = i;
         }
 
-        // 2. Merge accounts with common email
+        // 2. Merge accounts with common email - O(NK), O(NK)
         unordered_map<string, int> emailToMemberId;
         for(int i = 0; i < N; ++i) {
             for(int j = 1; j < accounts[i].size(); ++j) {
@@ -41,7 +41,7 @@ public:
             }
         }
 
-        // 3. Collect all emails for each group
+        // 3. Collect all emails for each group - O(NKLlogNK), O(NKL)
         unordered_map<int, set<string>> groupIdToEmails;
         for(int i = 0; i < N; ++i) {
             int groupId = find(i);
@@ -50,7 +50,7 @@ public:
             }
         }
 
-        // 4. Convert to answer format
+        // 4. Convert to answer format - O(NKL), O(NKL)
         vector<vector<string>> ans;
         for(auto it : groupIdToEmails) {
             int groupId = it.first;
@@ -59,6 +59,7 @@ public:
             account.insert(account.end(), emails.begin(), emails.end());
             ans.push_back(account);
         }
+        
         return ans;
     }
 };

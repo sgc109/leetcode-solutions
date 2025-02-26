@@ -24,14 +24,27 @@ class Solution {
 public:
     Node* cloneGraph(Node* node) {
         if(!node) {
-            return nullptr;
+            return node;
         }
-        if(map.count(node)) {
-            return map[node];
-        }
+        queue<Node*> q;
+        q.push(node);
         map[node] = new Node(node->val);
-        for(auto adj : node->neighbors) {
-            (map[node]->neighbors).push_back(cloneGraph(adj));
+        while(!q.empty()) {
+            Node* cur = q.front();
+            Node* newCur = map[cur];
+            q.pop();
+            for(Node* adj : cur->neighbors) {
+                bool notVisited = false;
+                if(!map.count(adj)) {
+                    map[adj] = new Node(adj->val);
+                    notVisited = true;
+                }
+                auto newAdj = map[adj];
+                (newCur->neighbors).push_back(newAdj);
+                if(notVisited) {
+                    q.push(adj);
+                }
+            }
         }
         return map[node];
     }

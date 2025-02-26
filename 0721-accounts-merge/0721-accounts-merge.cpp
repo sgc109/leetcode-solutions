@@ -25,17 +25,15 @@ public:
         for(int i = 0; i < N; ++i) {
             parents[i] = i;
         }
-        unordered_map<string, vector<int>> emailToIndices;
+        unordered_map<string, int> emailToBoss;
         for(int i = 0; i < N; ++i) {
             for(int j = 1; j < accounts[i].size(); ++j) {
                 auto email = accounts[i][j];
-                emailToIndices[email].push_back(i);
-            }
-        }
-        for(auto it : emailToIndices) {
-            auto indices = it.second;
-            for(int i = 0; i < indices.size() - 1; ++i) {
-                merge(indices[i], indices[i + 1]);
+                if(emailToBoss.count(email)) {
+                    merge(emailToBoss[email], i);
+                } else {
+                    emailToBoss[email] = i;
+                }
             }
         }
         unordered_map<int, set<string>> groupIdToEmails;

@@ -25,14 +25,14 @@ public:
         for(int i = 0; i < N; ++i) {
             parents[i] = i;
         }
-        unordered_map<string, int> emailToBoss;
+        unordered_map<string, int> emailToMemberId;
         for(int i = 0; i < N; ++i) {
             for(int j = 1; j < accounts[i].size(); ++j) {
                 auto email = accounts[i][j];
-                if(emailToBoss.count(email)) {
-                    merge(emailToBoss[email], i);
+                if(emailToMemberId.count(email)) {
+                    merge(emailToMemberId[email], i);
                 } else {
-                    emailToBoss[email] = i;
+                    emailToMemberId[email] = i;
                 }
             }
         }

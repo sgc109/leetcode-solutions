@@ -1,5 +1,5 @@
 class Solution {
-    bool isDigits(string& s) {
+    bool isDigits(string& s) { // 123.456
         if(s.empty()) {
             return false;
         }
@@ -11,9 +11,12 @@ class Solution {
         return true;
     }
 
-    bool isDecimalNumber(string& s) {
+    bool isDecimalNumber(string& s) { // -123.456
         if(s.empty()) {
             return false;
+        }
+        if(s[0] == '+' || s[0] == '-') {
+            s = s.substr(1);
         }
         int posDot = (int)s.find('.');
         if(posDot == -1) {
@@ -30,14 +33,17 @@ class Solution {
         return s.size() > 1;
     }
 
-    bool isIntegerNumber(string& s) {
+    bool isIntegerNumber(string& s) { // -123.456
         if(s.empty()) {
             return false;
         }
         if(s[0] == '+' || s[0] == '-') {
             s = s.substr(1);
         }
-        return isDigits(s);
+        if(s.empty()) {
+            return false;
+        }
+        return isDigits(s); // 123.456
     }
 
     bool isExponent(string& s) {
@@ -50,16 +56,16 @@ class Solution {
         string integerNumberMaybe = s.substr(1);
         return isIntegerNumber(integerNumberMaybe);
     }
-public:
-    bool isNumber(string s) {
+public: //                       012345678901
+    bool isNumber(string s) { // -123.456e789
         int posE = max((int)s.find('e'), (int)s.find('E'));
 
         if(posE == -1) {
             return isIntegerNumber(s) || isDecimalNumber(s);
         }
         
-        string integerOrDecimal = s.substr(0, posE);
-        string exponent = s.substr(posE);
+        string integerOrDecimal = s.substr(0, posE); // -123.456
+        string exponent = s.substr(posE); // e789
         return (isIntegerNumber(integerOrDecimal) || isDecimalNumber(integerOrDecimal)) && isExponent(exponent);
     }
 };

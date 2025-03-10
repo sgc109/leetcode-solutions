@@ -1,8 +1,19 @@
+/*
+1 <= len(nums) <= 10^5
+0 <= k <= N
+*/
+
 class Solution {
 public:
-    int longestOnes(vector<int>& nums, int k) {
+/*
+nums = [0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1], k = 0
+                            l
+                                              r
+ans = 10
+*/
+    int longestOnes(vector<int>& nums, int k) { // nums = [1,1,1,0,0,0,1,1,1,1,0], k = 2
+        int ans = 0; // 0
         int l = 0;
-        int ans = 0;
         for(int r = 0; r < nums.size(); ++r) {
             if(nums[r] == 0) {
                 --k;

@@ -11,14 +11,11 @@ class Solution {
     unordered_map<TreeNode*, TreeNode*> parents;
     unordered_set<TreeNode*> visited;
     vector<int> ans;
-    void buildParents(TreeNode* cur) {
-        if(cur->left) {
-            parents[cur->left] = cur;
-            buildParents(cur->left);
-        }
-        if(cur->right) {
-            parents[cur->right] = cur;
-            buildParents(cur->right);
+    void buildParents(TreeNode* cur, TreeNode* parent) {
+        if(cur) {
+            parents[cur] = parent;
+            buildParents(cur->left, cur);
+            buildParents(cur->right, cur);
         }
     }
     void dfs(TreeNode* cur, int dist) {
@@ -35,7 +32,7 @@ class Solution {
     }
 public:
     vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
-        buildParents(root);
+        buildParents(root, nullptr);
         dfs(target, k);
         return ans;
     }

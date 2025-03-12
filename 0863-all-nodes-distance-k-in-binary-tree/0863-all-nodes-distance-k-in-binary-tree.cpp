@@ -9,7 +9,7 @@
  */
 class Solution {
     unordered_map<TreeNode*, TreeNode*> parents;
-    unordered_set<TreeNode*> visited;
+    unordered_set<TreeNode*> discovered;
     vector<int> ans;
     void buildParents(TreeNode* root) {
         queue<TreeNode*> q;
@@ -27,29 +27,29 @@ class Solution {
             }
         }
     }
-    void bfs(TreeNode* cur, int dist) {
+    void bfs(TreeNode* root, int dist) {
         queue<pair<TreeNode*,int>> q;
-        q.push({cur, dist});
+        q.push({root, dist});
+        discovered.insert(root);
         while(!q.empty()) {
             auto front = q.front();
             q.pop();
             TreeNode* cur = front.first;
             int curDist = front.second;
-            if(visited.count(cur)) {
-                continue;
-            }
-            visited.insert(cur);
             if(curDist == 0) {
                 ans.push_back(cur->val);
             }
-            if(cur->left) {
+            if(cur->left && !discovered.count(cur->left)) {
                 q.push({cur->left, curDist - 1});
+                discovered.insert(cur->left);
             }
-            if(cur->right) {
+            if(cur->right && !discovered.count(cur->right)) {
                 q.push({cur->right, curDist - 1});
+                discovered.insert(cur->right);
             }
-            if(parents[cur]) {
+            if(parents[cur] && !discovered.count(parents[cur])) {
                 q.push({parents[cur], curDist - 1});
+                discovered.insert(parents[cur]);
             }
         }
     }

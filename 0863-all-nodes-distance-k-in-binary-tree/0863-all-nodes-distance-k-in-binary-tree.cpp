@@ -8,64 +8,35 @@
  * };
  */
 class Solution {
+    unordered_map<TreeNode*, TreeNode*> parents;
+    unordered_set<TreeNode*> visited;
     vector<int> ans;
-    int K;
-    TreeNode* targetNode;
-
-    int searchTarget(TreeNode* curNode) {
-        if(curNode == NULL) {
-            return -1;
+    void buildParents(TreeNode* cur) {
+        if(cur->left) {
+            parents[cur->left] = cur;
+            buildParents(cur->left);
         }
-
-        if(curNode == targetNode) {
-            return 1;
+        if(cur->right) {
+            parents[cur->right] = cur;
+            buildParents(cur->right);
         }
-
-        int leftDistToTarget = searchTarget(curNode->left);
-        int rightDistToTarget = searchTarget(curNode->right);
-        if(leftDistToTarget == -1 && rightDistToTarget == -1) {
-            return -1;
-        }
-
-        int distToTarget = max(leftDistToTarget, rightDistToTarget);
-        if(distToTarget == K) {
-            ans.push_back(curNode->val);
-            return distToTarget + 1; 
-        }
-
-        if(leftDistToTarget != -1) {
-            searchAnswer(curNode->right, 0, K - leftDistToTarget - 1);
-        } else {
-            searchAnswer(curNode->left, 0, K - rightDistToTarget - 1);
-        }
-
-        return distToTarget + 1;
     }
-
-    void searchAnswer(TreeNode* curNode, int curDist, int targetDist) {
-        if(curNode == NULL) {
+    void dfs(TreeNode* cur, int dist) {
+        if(!cur || visited.count(cur)) {
             return;
         }
-        if(curDist == targetDist) {
-            ans.push_back(curNode->val);
-            return;
+        if(dist == 0) {
+            ans.push_back(cur->val);
         }
-        searchAnswer(curNode->left, curDist + 1, targetDist);
-        searchAnswer(curNode->right, curDist + 1, targetDist);
+        visited.insert(cur);
+        dfs(cur->left, dist - 1);
+        dfs(cur->right, dist - 1);
+        dfs(parents[cur], dist - 1);
     }
 public:
     vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
-        if(root == target) {
-            searchAnswer(target, 0, k);
-            return ans;
-        }
-
-        this->K = k;
-        this->targetNode = target;
-        
-        searchTarget(root);
-        searchAnswer(target, 0, k);
-
+        buildParents(root);
+        dfs(target, k);
         return ans;
     }
 };

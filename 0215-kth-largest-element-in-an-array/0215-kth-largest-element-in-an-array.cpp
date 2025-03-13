@@ -1,30 +1,28 @@
 class Solution {
+    int quickSelect(int l, int r, int k, vector<int>& nums) {
+        int randomIdx = rand() % (r - l + 1) + l;
+        swap(nums[randomIdx], nums[r]);
+        int p = l;
+        for(int i = l; i < r; ++i) {
+            int couldBeSame = rand() % 2;
+            if((couldBeSame && nums[i] <= nums[r]) ||
+               (!couldBeSame && nums[i] < nums[r])) {
+                swap(nums[p], nums[i]);
+                ++p;
+            }
+        }
+        swap(nums[p], nums[r]);
+        if(p == k) {
+            return nums[p];
+        } else if(p < k) {
+            return quickSelect(p + 1, r, k, nums);
+        } else {
+            return quickSelect(l, p - 1, k, nums);
+        }
+    }
 public:
     int findKthLargest(vector<int>& nums, int k) {
-        int lo = 20001, hi = -1;
-        for(int& num : nums) {
-            num += 10000;
-            lo = min(lo, num);
-            hi = max(hi, num);
-        }
-
-        k = size(nums) - k + 1;
-
-        while(lo < hi) {
-            int mid = (lo + hi) / 2;
-            
-            int count = 0;
-            for(int num : nums) {
-                count += num <= mid;
-            }
-
-            if(count < k) {
-                lo = mid + 1;
-            } else {
-                hi = mid;
-            }
-        }
-
-        return lo - 10000;
+        k = nums.size() - k;
+        return quickSelect(0, nums.size() - 1, k, nums);
     }
 };

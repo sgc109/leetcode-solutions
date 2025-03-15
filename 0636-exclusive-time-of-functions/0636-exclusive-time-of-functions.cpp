@@ -1,27 +1,38 @@
+/*
+   0    0 00
+0             0
+    0   0 11
+ 0           0
+ 
+ len(logs) <= 500
+ id < 100
+ timestamp <= 10^9
+
+       1,2    1,5
+  0,0             0,6
+ 
+*/
 class Solution {
 public:
+// n = 1, logs = ["0:start:0","0:start:2","0:end:5","0:start:6","0:end:6","0:end:7"]
     vector<int> exclusiveTime(int n, vector<string>& logs) {
-        vector<int> ans = vector<int>(n, 0);
-        stack<pair<int,int>> stack;
-        string tmp;
-        for(string& log : logs) {
-            stringstream ss(log);
-            getline(ss, tmp, ':');
-            int funcId = stoi(tmp);
-            getline(ss, tmp, ':');
-            string event = tmp;
-            getline(ss, tmp, ':');
-            int timestamp = stoi(tmp);
-            if(event == "start") {
-                stack.push({timestamp, 0});
+        // {{func_id, timestamp}, subtractor}
+        vector<int> ans(n, 0); // [8]
+        stack<pair<pair<int,int>,int>> stack; // []
+        for(auto& log : logs) {
+            int funcId = stoi(log.substr(0, log.find(':')));
+            bool isStart = log.find('e') == -1;
+            int timestamp = stoi(log.substr(log.rfind(':') + 1));
+            if(isStart) {
+                stack.push({{funcId, timestamp}, 0});
             } else {
-                auto top = stack.top();
+                auto top = stack.top(); // ((0,0),5)
                 stack.pop();
-                int startTime = top.first;
-                int totalExecutionOnTop = top.second;
-                ans[funcId] += timestamp - startTime + 1 - totalExecutionOnTop;
+                int gap = timestamp - top.first.second + 1;  // 7 - 0 + 1 = 3
+                int exTime = gap - top.second; // 8 - 5 = 3
+                ans[funcId] += exTime;
                 if(!stack.empty()) {
-                    stack.top().second += timestamp - startTime + 1;
+                    stack.top().second += gap;
                 }
             }
         }

@@ -7,21 +7,22 @@ class Solution {
         }
     };
 public:
+// points = [], k = 
+//                          ^
     vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
-        priority_queue<Point> pq;
-        for(int i = 0; i < points.size(); ++i) {
-            pq.push(Point{points[i][0], points[i][1]});
+        priority_queue<Point> pq; // [(3,3,18),(-2,4,20)]
+        for(auto point : points) {
+            pq.push(Point{point[0], point[1]});
             if(pq.size() > k) {
                 pq.pop();
             }
         }
-        vector<vector<int>> ans;
+        vector<vector<int>> ans; // [(-2,2)]
         while(!pq.empty()) {
-            auto top = pq.top();
+            auto [x, y] = pq.top();
             pq.pop();
-            ans.push_back({top.x, top.y});
+            ans.push_back({x, y});
         }
-        reverse(ans.begin(), ans.end());
         return ans;
     }
 };

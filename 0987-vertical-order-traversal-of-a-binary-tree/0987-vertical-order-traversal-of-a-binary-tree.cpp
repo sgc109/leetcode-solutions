@@ -10,42 +10,30 @@
  * };
  */
 class Solution {
-    struct Position {
-        TreeNode* node;
-        int col;
-        bool operator<(const Position& rhs) const {
-            return node->val > (rhs.node)->val;
-        }  
-    };
 public:
     vector<vector<int>> verticalTraversal(TreeNode* root) {
-        priority_queue<Position> pq;
-        int minCol = INT_MAX;
-        int maxCol = INT_MIN;
-        unordered_map<int, vector<int>> colToVals;
-        pq.push(Position{root, 0});
-        while(!pq.empty()) {
-            vector<Position> nextPositions;
-            while(!pq.empty()) {
-                auto cur = pq.top();
-                pq.pop();
-                colToVals[cur.col].push_back((cur.node)->val);
-                if((cur.node)->left) {
-                    nextPositions.push_back(Position{(cur.node)->left, cur.col - 1});
-                }
-                if((cur.node)->right) {
-                    nextPositions.push_back(Position{(cur.node)->right, cur.col + 1});
-                }
-                minCol = min(minCol, cur.col);
-                maxCol = max(maxCol, cur.col);
+        map<int, map<int, multiset<int>>> buckets;
+        queue<pair<TreeNode*, pair<int, int>>> q;
+        q.push({root, {0, 0}});
+        while(!q.empty()) {
+            auto [curNode, coord] = q.front();
+            auto [row, col] = coord;
+            q.pop();
+            buckets[col][row].insert(curNode->val);
+            if(curNode->left) {
+                q.push({curNode->left, {row + 1, col - 1}});
             }
-            for(auto position : nextPositions) {
-                pq.push(position);
+            if(curNode->right) {
+                q.push({curNode->right, {row + 1, col + 1}});
             }
         }
         vector<vector<int>> ans;
-        for(int i = minCol; i <= maxCol; ++i) {
-            ans.push_back(colToVals[i]);
+        for(auto [col, rows] : buckets) {
+            vector<int> tmp;
+            for(auto [row, vals] : rows) {
+                tmp.insert(tmp.end(), vals.begin(), vals.end());
+            }
+            ans.push_back(tmp);
         }
         return ans;
     }

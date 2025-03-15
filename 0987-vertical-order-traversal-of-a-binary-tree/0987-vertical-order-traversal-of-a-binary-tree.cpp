@@ -28,9 +28,9 @@ public:
             }
         }
         vector<vector<int>> ans;
-        for(auto [col, rows] : buckets) {
+        for(auto [_, rows] : buckets) {
             vector<int> tmp;
-            for(auto [row, vals] : rows) {
+            for(auto [_, vals] : rows) {
                 tmp.insert(tmp.end(), vals.begin(), vals.end());
             }
             ans.push_back(tmp);

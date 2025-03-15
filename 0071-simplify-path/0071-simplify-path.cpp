@@ -1,23 +1,30 @@
 class Solution {
 public:
+ // path = "/.../a/../b/c/../d/./"
+ //           ^
     string simplifyPath(string path) {
-        vector<string> stack;
         stringstream ss(path);
-        string file;
-        while(getline(ss, file, '/')) {
-            if(file == "..") {
+        vector<string> stack; // [..., b, d]
+        string tmp;
+        while(getline(ss, tmp, '/')) {
+            if(tmp == "" || tmp == ".") {
+                continue;
+            } else if(tmp == "..") {
                 if(!stack.empty()) {
                     stack.pop_back();
                 }
-            } else if(file != "." && file != "") {
-                stack.push_back(file);
+            } else {
+                stack.push_back(tmp);
             }
         }
-        string ans = "";
-        for(string str : stack) {
-            ans += "/";
-            ans += str;
+
+        string ans = "/"; // /home/user/Prictures
+        for(int i = 0; i < stack.size(); ++i) {
+            ans += stack[i];
+            if(i < stack.size() - 1) {
+                ans += "/";
+            }
         }
-        return ans.empty() ? "/" : ans;
+        return ans;
     }
 };

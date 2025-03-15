@@ -26,13 +26,13 @@ public:
         firstModIdx[0] = -1;
         int acc = 0; // 29
         for(int i = 0; i < nums.size(); ++i) {
-            acc += nums[i];
-            int mod = acc % k; // 5
-            if(firstModIdx.count(mod) && i - firstModIdx[mod] >= 2) {
-                return true;
-            }
-            if(!firstModIdx.count(mod)) {
-                firstModIdx[mod] = i;
+            acc = (acc + nums[i]) % k;
+            if(firstModIdx.count(acc)) {
+                if(i - firstModIdx[acc] >= 2) {
+                    return true;
+                }
+            } else {
+                firstModIdx[acc] = i;
             }
         }
         return false;

@@ -11,7 +11,7 @@ public:
 //                          ^
     vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
         priority_queue<Point> pq; // [(3,3,18),(-2,4,20)]
-        for(auto point : points) {
+        for(auto& point : points) {
             pq.push(Point{point[0], point[1]});
             if(pq.size() > k) {
                 pq.pop();

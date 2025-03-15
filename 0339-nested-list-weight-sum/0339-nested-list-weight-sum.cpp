@@ -29,27 +29,24 @@
  */
 class Solution {
 public:
+// nestedList = [0]
     int depthSum(vector<NestedInteger>& nestedList) {
-        int ans = 0;
-        queue<pair<NestedInteger, int>> q;
-        for(auto nestedInt : nestedList) {
+        queue<pair<NestedInteger, int>> q; // []
+        for(auto& nestedInt : nestedList) {
             q.push({nestedInt, 1});
         }
+        int ans = 0; // 0
         while(!q.empty()) {
-            auto it = q.front();
+            auto [curNode, depth] = q.front(); // (0,1)
             q.pop();
-            
-            auto nestedInt = it.first;
-            int depth = it.second;
-            
-            if(nestedInt.isInteger()) {
-                ans += nestedInt.getInteger() * depth;
+            if(curNode.isInteger()) {
+                ans += curNode.getInteger() * depth;
             } else {
-                for(auto next : nestedInt.getList()) {
-                    q.push({next, depth + 1});
+                for(auto& child : curNode.getList()) {
+                    q.push({child, depth + 1});
                 }
             }
         }
-        return ans;
+        return ans;        
     }
 };

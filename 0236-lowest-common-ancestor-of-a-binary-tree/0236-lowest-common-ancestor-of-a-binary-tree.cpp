@@ -8,41 +8,22 @@
  * };
  */
 class Solution {
+    TreeNode* dfs(TreeNode* cur, TreeNode* p, TreeNode* q) {
+        if(cur == p || cur == q || cur == nullptr) {
+            return cur;
+        }
+        auto left = dfs(cur->left, p, q);
+        auto right = dfs(cur->right, p, q);
+        if(!left) {
+            return right;
+        } else if(!right) {
+            return left;
+        } else {
+            return cur;
+        }
+    }
 public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        unordered_map<TreeNode*, TreeNode*> childToParent;
-        queue<TreeNode*> queue;
-        queue.push(root);
-        while(!queue.empty()) {
-            auto cur = queue.front();
-            queue.pop();
-            if(cur->left) {
-                childToParent[cur->left] = cur;
-                queue.push(cur->left);
-            }
-            if(cur->right) {
-                childToParent[cur->right] = cur;
-                queue.push(cur->right);
-            }  
-        }
-        unordered_set<TreeNode*> visited;
-        
-        while(p || q) {
-            if(p && visited.count(p)) {
-                return p;
-            }
-            visited.insert(p);
-            if(q && visited.count(q)) {
-                return q;
-            }
-            visited.insert(q);
-            if(p) {
-                p = childToParent[p];
-            }
-            if(q) {
-                q = childToParent[q];
-            }
-        }
-        return nullptr;
+        return dfs(root, p, q);
     }
 };

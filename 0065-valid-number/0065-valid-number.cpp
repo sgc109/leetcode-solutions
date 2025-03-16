@@ -1,71 +1,40 @@
+/*
+
+(+/-)(0-9)(.)(0-9)(e/E 0-9)
+*/
+
 class Solution {
-    bool isDigits(string& s) { // 123.456
-        if(s.empty()) {
-            return false;
-        }
+public: // "-123.456e789"
+    bool isNumber(string s) {
+        unordered_map<string,int> dfa[] = {
+            {{"digit", 1}, {"sign", 2}, {"dot", 3}}, // state = 0
+            {{"digit", 1}, {"dot", 4}, {"e", 5}}, // state = 1 (final)
+            {{"digit", 1}, {"dot", 3}}, // state = 2
+            {{"digit", 4}}, // state = 3
+            {{"digit", 4}, {"e", 5}}, // state = 4 (final)
+            {{"sign", 6}, {"digit", 7}}, // state = 5
+            {{"digit", 7}}, // state = 6
+            {{"digit", 7}} // state = 7 (final)
+        };
+        int state = 0;
+        string group;
         for(char c : s) {
-            if(!isdigit(c)) {
+            if(isdigit(c)) {
+                group = "digit";
+            } else if(c == '+' || c == '-') {
+                group = "sign";
+            } else if(c == '.') {
+                group = "dot";
+            } else if(tolower(c) == 'e') {
+                group = "e";
+            } else {
                 return false;
             }
+            if(dfa[state].find(group) == dfa[state].end()) {
+                return false;
+            }
+            state = dfa[state][group];
         }
-        return true;
-    }
-
-    bool isDecimalNumber(string& s) { // -123.456
-        if(s.empty()) {
-            return false;
-        }
-        if(s[0] == '+' || s[0] == '-') {
-            s = s.substr(1);
-        }
-        int posDot = (int)s.find('.');
-        if(posDot == -1) {
-            return false;
-        }
-        string leftPart = s.substr(0, posDot);
-        if(posDot > 0 && !isDigits(leftPart)) {
-            return false;
-        }
-        string rightPart = s.substr(posDot + 1);
-        if(posDot < s.size() - 1 && !isDigits(rightPart)) {
-            return false;
-        }
-        return s.size() > 1;
-    }
-
-    bool isIntegerNumber(string& s) { // -123.456
-        if(s.empty()) {
-            return false;
-        }
-        if(s[0] == '+' || s[0] == '-') {
-            s = s.substr(1);
-        }
-        if(s.empty()) {
-            return false;
-        }
-        return isDigits(s); // 123.456
-    }
-
-    bool isExponent(string& s) {
-        if(s.empty()) {
-            return false;
-        }
-        if(s[0] != 'e' && s[0] != 'E') {
-            return false;
-        }
-        string integerNumberMaybe = s.substr(1);
-        return isIntegerNumber(integerNumberMaybe);
-    }
-public: //                       012345678901
-    bool isNumber(string s) { // -123.456e789
-        int posE = max((int)s.find('e'), (int)s.find('E'));
-
-        if(posE == -1) {
-            return isIntegerNumber(s) || isDecimalNumber(s);
-        }
-        
-        string integerOrDecimal = s.substr(0, posE); // -123.456
-        string exponent = s.substr(posE); // e789
-        return (isIntegerNumber(integerOrDecimal) || isDecimalNumber(integerOrDecimal)) && isExponent(exponent);
+        return state == 1 || state == 4 || state == 7;
     }
 };

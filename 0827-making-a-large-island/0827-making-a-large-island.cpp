@@ -1,80 +1,89 @@
+/*
+Example 1
+1 0
+0 1
+
+Example 2
+1 1
+1 0
+
+Example 3
+1 1
+1 1
+*/
 class Solution {
-    vector<int> par;
-    vector<int> size;
     int N;
+    vector<int> parents;
+    vector<int> sizes;
     int dr[4] = {-1, 0, 1, 0};
     int dc[4] = {0, 1, 0, -1};
     bool inRange(int r, int c) {
         return 0 <= r && r < N && 0 <= c && c < N;
     }
     int find(int u) {
-        if(par[u] == u) {
+        if(parents[u] == u) {
             return u;
         }
-        return par[u] = find(par[u]);
+        return parents[u] = find(parents[u]);
     }
     int merge(int u, int v) {
         u = find(u), v = find(v);
         if(u == v) {
-            return size[u];
+            return sizes[u];
         }
-        if(size[u] > size[v]) {
+        if(sizes[u] > sizes[v]) {
             swap(u, v);
         }
-        par[u] = v;
-        size[v] += size[u];
-        return size[v];
+        sizes[v] += sizes[u];
+        parents[u] = v;
+        return sizes[v];
     }
 public:
     int largestIsland(vector<vector<int>>& grid) {
-        this->N = grid.size();
-        par = vector<int>(N * N); //     [1, 1, 1, 3]
-        size = vector<int>(N * N, 1); // [1, 3, 1, 1]
+        N = grid.size();
+        sizes = vector<int>(N * N, 1); 
+        parents = vector<int>(N * N);
         for(int i = 0; i < N * N; ++i) {
-            par[i] = i;
+            parents[i] = i; 
         }
-        
-        int ans = 1; // 3
-        for(int r = 0; r < N; ++r) { // 0
-            for(int c = 0; c < N; ++c) { // 0
-                if(!grid[r][c]) {
-                    continue;
-                }
-                for(int i = 0; i < 4; ++i) {
-                    int nr = r + dr[i];
-                    int nc = c + dc[i];
-                    if(!inRange(nr, nc) || !grid[nr][nc]) {
-                        continue;
-                    }
-                    int mergedSize = merge(r * N + c, nr * N + nc);
-                    ans = max(ans, mergedSize);
-                }
-            }
-        }
-
-/*
-1 1
-1 0
-*/
+        int ans = 1; // 4
         for(int r = 0; r < N; ++r) {
             for(int c = 0; c < N; ++c) {
                 if(grid[r][c]) {
-                    continue;
-                }
-                set<int> uniqueGroupIds;
-                for(int i = 0; i < 4; ++i) {
-                    int nr = r + dr[i];
-                    int nc = c + dc[i];
-                    if(!inRange(nr, nc) || !grid[nr][nc]) {
-                        continue;
+                    for(int k = 0; k < 4; ++k) {
+                        int nr = r + dr[k];
+                        int nc = c + dc[k];
+                        if(inRange(nr, nc) && grid[nr][nc]) {
+                            int mergedSize = merge(r * N + c, nr * N + nc);
+                            ans = max(ans, mergedSize);
+                        }
                     }
-                    uniqueGroupIds.insert(find(nr * N + nc));
                 }
-                int sumSize = 1;
-                for(int groupId : uniqueGroupIds) {
-                    sumSize += size[groupId];
+            }
+        }
+/*
+1 1
+1 1
+sizes = [1, 4, 1, 1]
+parents = [1, 1, 1, 1]
+*/
+        for(int r = 0; r < N; ++r) {
+            for(int c = 0; c < N; ++c) {
+                if(!grid[r][c]) {
+                    set<int> setIds;
+                    for(int k = 0; k < 4; ++k) {
+                        int nr = r + dr[k];
+                        int nc = c + dc[k];
+                        if(inRange(nr, nc) && grid[nr][nc]) {
+                            setIds.insert(find(nr * N + nc));
+                        }
+                    }
+                    int sumSize = 1; // 4
+                    for(int setId : setIds) {
+                        sumSize += sizes[setId];
+                    }
+                    ans = max(ans, sumSize);
                 }
-                ans = max(ans, sumSize);
             }
         }
         return ans;

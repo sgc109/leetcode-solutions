@@ -12,39 +12,20 @@
  */
 
 class Solution {
+    unordered_map<Node*, NodeCopy*> oldToNew;
 public:
     NodeCopy* copyRandomBinaryTree(Node* root) {
         if(!root) {
             return nullptr;
         }
-        unordered_map<Node*, NodeCopy*> oldToNew;
-        queue<Node*> q;
-        q.push(root);
-        oldToNew[root] = new NodeCopy(root->val);
-        while(!q.empty()) {
-            Node* curNode = q.front();
-            q.pop();
-            if(curNode->left) {
-                if(!oldToNew.count(curNode->left)) {
-                    oldToNew[curNode->left] = new NodeCopy(curNode->left->val);
-                }
-                q.push(curNode->left);
-                oldToNew[curNode]->left = oldToNew[curNode->left];
-            }
-            if(curNode->right) {
-                if(!oldToNew.count(curNode->right)) {
-                    oldToNew[curNode->right] = new NodeCopy(curNode->right->val);
-                }
-                q.push(curNode->right);
-                oldToNew[curNode]->right = oldToNew[curNode->right];
-            }
-            if(curNode->random) {
-                if(!oldToNew.count(curNode->random)) {
-                    oldToNew[curNode->random] = new NodeCopy(curNode->random->val);
-                }
-                oldToNew[curNode]->random = oldToNew[curNode->random];
-            }
+        if(oldToNew.count(root)) {
+            return oldToNew[root];
         }
+        oldToNew[root] = new NodeCopy(root->val);
+        oldToNew[root]->left = copyRandomBinaryTree(root->left);
+        oldToNew[root]->right = copyRandomBinaryTree(root->right);
+        oldToNew[root]->random = copyRandomBinaryTree(root->random);
+                
         return oldToNew[root];
     }
 };

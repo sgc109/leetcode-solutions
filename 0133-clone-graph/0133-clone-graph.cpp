@@ -20,32 +20,23 @@ public:
 */
 
 class Solution {
-    unordered_map<Node*, Node*> map;
+    unordered_map<Node*, Node*> oldToNew;
+    Node* dfs(Node* curNode) {
+        if(oldToNew.count(curNode)) {
+            return oldToNew[curNode];
+        }
+        oldToNew[curNode] = new Node(curNode->val);
+        for(auto nextNode : curNode->neighbors) {
+            (oldToNew[curNode]->neighbors).push_back(dfs(nextNode));
+        }
+
+        return oldToNew[curNode];
+    }
 public:
     Node* cloneGraph(Node* node) {
         if(!node) {
             return node;
         }
-        queue<Node*> q;
-        q.push(node);
-        map[node] = new Node(node->val);
-        while(!q.empty()) {
-            Node* cur = q.front();
-            Node* newCur = map[cur];
-            q.pop();
-            for(Node* adj : cur->neighbors) {
-                bool notVisited = false;
-                if(!map.count(adj)) {
-                    map[adj] = new Node(adj->val);
-                    notVisited = true;
-                }
-                auto newAdj = map[adj];
-                (newCur->neighbors).push_back(newAdj);
-                if(notVisited) {
-                    q.push(adj);
-                }
-            }
-        }
-        return map[node];
+        return dfs(node);
     }
 };

@@ -1,45 +1,45 @@
 class Solution {
-    int N, M;
-    bool inRange(int row, int col) {
-        return 0 <= row 
-            && row < N 
-            && 0 <= col 
-            && col < M;
+    int dr[4] = {-1, 0, 1, 0};
+    int dc[4] = {0, 1, 0, -1};
+    int R;
+    int C;
+    vector<vector<char>> board;
+    string word;
+    bool inRange(int r, int c) {
+        return 0 <= r && r < R && 0 <= c && c < C;
     }
-    
-    int toHash(int row, int col) {
-        return row * 10 + col;
-    }
-    
-    bool solve(
-        int row, 
-        int col, 
-        int pos, 
-        vector<vector<char>>& board, 
-        string& word
-    ) {
-        if(pos == word.size()) return true;
-        if(!inRange(row, col) 
-           || board[row][col] != word[pos] ) {
+
+    bool check(int r, int c, int idx) {
+        if(board[r][c] != word[idx]) {
             return false;
         }
-        char backup = board[row][col];
-        board[row][col] = 0;
-        for(int i = 0; i < 4; i++) {
-            int nr = row + "2110"[i] - '1';
-            int nc = col + "1201"[i] - '1';
-            if(solve(nr, nc, pos + 1, board, word)) return true;
+        if(idx == word.size() - 1) {
+            return true;
         }
-        board[row][col] = backup;
+        char backup = board[r][c];
+        board[r][c] = '!';
+        for(int i = 0; i < 4; ++i) {
+            int nr = r + dr[i];
+            int nc = c + dc[i];
+            if(!inRange(nr, nc) || board[nr][nc] == '!') {
+                continue;
+            }
+            if(check(nr, nc, idx + 1)) {
+                return true;
+            }
+        }
+        board[r][c] = backup;
         return false;
     }
 public:
     bool exist(vector<vector<char>>& board, string word) {
-        this->N = board.size();
-        this->M = board[0].size();
-        for(int i = 0; i < N; i++) {
-            for(int j = 0; j < M; j++) {
-                if(solve(i, j, 0, board, word)) {
+        this->board = board;
+        this->word = word;
+        this->R = board.size();
+        this->C = board[0].size();
+        for(int i = 0; i < R; ++i) {
+            for(int j = 0; j < C; ++j) {
+                if(check(i, j, 0)) {
                     return true;
                 }
             }

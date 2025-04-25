@@ -1,6 +1,6 @@
 class Codec {
     string parsingKey = "";
-    int keySize = 10;
+    int keySize = 5;
 public:
     Codec() {
         for(int i = 0; i < keySize; ++i) {

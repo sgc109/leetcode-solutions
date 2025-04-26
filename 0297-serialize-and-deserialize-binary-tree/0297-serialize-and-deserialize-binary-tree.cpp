@@ -8,20 +8,17 @@
  * };
  */
 class Codec {
-    void dfs(TreeNode* cur, string& encoded) {
+    void dfs(TreeNode* cur, string& encoded, bool isRoot) {
+        if(!cur) {
+            encoded += ",x";
+            return;
+        }
+        if(!isRoot) {
+            encoded += ",";
+        }
         encoded += to_string(cur->val);
-        if(cur->left) {
-            encoded += ",";
-            dfs(cur->left, encoded);
-        } else {
-            encoded += ",x";
-        }
-        if(cur->right) {
-            encoded += ",";
-            dfs(cur->right, encoded);
-        } else {
-            encoded += ",x";
-        }
+        dfs(cur->left, encoded, false);
+        dfs(cur->right, encoded, false);
     }
     TreeNode* buildTree(string& encoded, int& idx) {
         int num = 0;
@@ -55,7 +52,7 @@ public:
             return "";
         }
         string encoded = "";
-        dfs(root, encoded);
+        dfs(root, encoded, true);
         return encoded;
     }
 

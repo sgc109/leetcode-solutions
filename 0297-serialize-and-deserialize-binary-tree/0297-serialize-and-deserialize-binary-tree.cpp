@@ -10,13 +10,10 @@
 class Codec {
     void dfs(TreeNode* cur, string& encoded, bool isRoot) {
         if(!cur) {
-            encoded += ",x";
+            encoded += "x,";
             return;
         }
-        if(!isRoot) {
-            encoded += ",";
-        }
-        encoded += to_string(cur->val);
+        encoded += to_string(cur->val) + ",";
         dfs(cur->left, encoded, false);
         dfs(cur->right, encoded, false);
     }

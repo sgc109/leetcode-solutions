@@ -1,21 +1,26 @@
 class Solution {
-    vector<vector<int>> dp;
-    int go(int amount, int coinIdx, vector<int>& coins) {
-        if(coins.size() == coinIdx) {
-            return amount == 0 ? 1 : 0;
+    typedef long long ll;
+
+    vector<vector<ll>> dp;
+    ll truncateToInt(ll num) {
+        while(num >= 1ll << 32) {
+            num -= 1ll << 32;
         }
-        if(dp[amount][coinIdx] != -1) {
-            return dp[amount][coinIdx];
-        }
-        int ans = go(amount, coinIdx + 1, coins);
-        if(amount >= coins[coinIdx]) {
-            ans += go(amount - coins[coinIdx], coinIdx, coins);
-        }
-        return dp[amount][coinIdx] = ans;
+        return num;
     }
 public:
     int change(int amount, vector<int>& coins) {
-        dp = vector<vector<int>>(amount + 1, vector<int>(coins.size() + 1, -1));
-        return go(amount, 0, coins);
+        dp = vector<vector<ll>>(coins.size() + 1, vector<ll>(amount + 1, 0));
+        dp[0][0] = 1;
+        for(int i = 1; i <= coins.size(); ++i) {
+            for(int j = 0; j <= amount; ++j) {
+                dp[i][j] = dp[i - 1][j];
+                if(j >= coins[i - 1]) {
+                    dp[i][j] += dp[i][j - coins[i - 1]];
+                    dp[i][j] = truncateToInt(dp[i][j]);
+                }
+            }
+        }
+        return dp[coins.size()][amount];
     }
 };

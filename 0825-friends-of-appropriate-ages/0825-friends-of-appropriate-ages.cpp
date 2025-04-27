@@ -5,10 +5,11 @@ public:
         for(auto age : ages) {
             counters[age]++;
         }
-        vector<int> sortedAges;
+        vector<int> sortedAges(ages.size());
+        int cnt = 0;
         for(int i = 1; i <= 120; ++i) {
             for(int j = 0; j < counters[i]; ++j) {
-                sortedAges.push_back(i);
+                sortedAges[cnt++] = i;
             }
         }
         

@@ -1,21 +1,27 @@
 class Solution {
 public:
     int numFriendRequests(vector<int>& ages) {
-        unordered_map<int, int> counters;
+        vector<int> counters(121, 0);
         for(auto age : ages) {
             counters[age]++;
         }
-        sort(begin(ages), end(ages));
+        vector<int> sortedAges;
+        for(int i = 1; i <= 120; ++i) {
+            for(int j = 0; j < counters[i]; ++j) {
+                sortedAges.push_back(i);
+            }
+        }
+        
         int l = 0;
         int ans = 0;
-        for(int r = 0; r < ages.size(); ++r) {
-            while(l < r && ages[l] <= 0.5 * ages[r] + 7) {
+        for(int r = 0; r < sortedAges.size(); ++r) {
+            while(l < r && sortedAges[l] <= 0.5 * sortedAges[r] + 7) {
                 ++l;
             }
             ans += r - l;
-            if(counters[ages[r]] > 1 && ages[r] > 0.5 * ages[r] + 7) {
-                ans += counters[ages[r]] - 1;
-                counters[ages[r]]--;
+            if(counters[sortedAges[r]] > 1 && sortedAges[r] > 0.5 * sortedAges[r] + 7) {
+                ans += counters[sortedAges[r]] - 1;
+                counters[sortedAges[r]]--;
             }
         }
         return ans;

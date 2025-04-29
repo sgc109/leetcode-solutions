@@ -22,7 +22,8 @@ class Solution {
         {'L', 'R'},
         {'R', 'L'},
     };
-    unordered_map<int, unordered_map<int,int>> grid;
+    int grid[1003][1003];
+    int dist[1003][1003];
     void dfs(int r, int c, GridMaster& master) {
         if(master.isTarget()) {
             grid[r][c] = 2;
@@ -31,7 +32,7 @@ class Solution {
             auto [dr, dc] = offset;
             int nr = r + dr;
             int nc = c + dc;
-            if(grid.count(nr) > 0 && grid[nr].count(nc) > 0) {
+            if(grid[nr][nc] != -1) {
                 continue;
             }
             if(master.canMove(dir)) {
@@ -47,21 +48,22 @@ class Solution {
 public:
     int findShortestPath(GridMaster &master) {
         // 1. build grid
-        grid[0][0] = -1;
-        dfs(0, 0, master);
+        memset(grid, -1, sizeof(grid));
+        grid[500][500] = 0;
+        dfs(500, 500, master);
 
         // 2. BFS with grid
+        memset(dist, -1, sizeof(dist));
         queue<pair<int,int>> q;
-        unordered_map<int, unordered_map<int, int>> dist;
-        q.push({0, 0});
-        dist[0][0] = 0;
+        q.push({500, 500});
+        dist[500][500] = 0;
         while(!q.empty()) {
             auto [r, c] = q.front();
             q.pop();
             for(int i = 0; i < 4; ++i) {
                 int nr = r + "1201"[i] - '1';
                 int nc = c + "2110"[i] - '1';
-                if(dist.count(nr) > 0 && dist[nr].count(nc) > 0) {
+                if(dist[nr][nc] != -1) {
                     continue;
                 }
                 if(grid[nr][nc] == 0) {

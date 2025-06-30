@@ -3,9 +3,7 @@ class Solution:
         self.hset = set()
         
     def singleNumber(self, nums: List[int]) -> int:
+        ans = 0
         for num in nums:
-            if num in self.hset:
-                self.hset.remove(num)
-            else:
-                self.hset.add(num)
-        return self.hset.pop()
+            ans ^= num
+        return ans

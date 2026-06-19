@@ -9,6 +9,7 @@ Collection of LeetCode questions to ace the coding interview! - Created using [L
 | Problem Name | Difficulty |
 | ------- | ------- |
 | [0865-smallest-subtree-with-all-the-deepest-nodes](https://github.com/sgc109/leetcode-solutions/tree/main/0865-smallest-subtree-with-all-the-deepest-nodes/) | Medium |
+| [1296-divide-array-in-sets-of-k-consecutive-numbers](https://github.com/sgc109/leetcode-solutions/tree/main/1296-divide-array-in-sets-of-k-consecutive-numbers/) | Medium |
 ## Tree
 | Problem Name | Difficulty |
 | ------- | ------- |
@@ -29,6 +30,7 @@ Collection of LeetCode questions to ace the coding interview! - Created using [L
 | Problem Name | Difficulty |
 | ------- | ------- |
 | [0990-satisfiability-of-equality-equations](https://github.com/sgc109/leetcode-solutions/tree/main/0990-satisfiability-of-equality-equations/) | Medium |
+| [1296-divide-array-in-sets-of-k-consecutive-numbers](https://github.com/sgc109/leetcode-solutions/tree/main/1296-divide-array-in-sets-of-k-consecutive-numbers/) | Medium |
 ## String
 | Problem Name | Difficulty |
 | ------- | ------- |
@@ -41,4 +43,12 @@ Collection of LeetCode questions to ace the coding interview! - Created using [L
 | Problem Name | Difficulty |
 | ------- | ------- |
 | [0990-satisfiability-of-equality-equations](https://github.com/sgc109/leetcode-solutions/tree/main/0990-satisfiability-of-equality-equations/) | Medium |
+## Greedy
+| Problem Name | Difficulty |
+| ------- | ------- |
+| [1296-divide-array-in-sets-of-k-consecutive-numbers](https://github.com/sgc109/leetcode-solutions/tree/main/1296-divide-array-in-sets-of-k-consecutive-numbers/) | Medium |
+## Sorting
+| Problem Name | Difficulty |
+| ------- | ------- |
+| [1296-divide-array-in-sets-of-k-consecutive-numbers](https://github.com/sgc109/leetcode-solutions/tree/main/1296-divide-array-in-sets-of-k-consecutive-numbers/) | Medium |
 <!---LeetCode Topics End-->

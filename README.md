@@ -10,6 +10,7 @@ Collection of LeetCode questions to ace the coding interview! - Created using [L
 | ------- | ------- |
 | [0659-split-array-into-consecutive-subsequences](https://github.com/sgc109/leetcode-solutions/tree/main/0659-split-array-into-consecutive-subsequences/) | Medium |
 | [0865-smallest-subtree-with-all-the-deepest-nodes](https://github.com/sgc109/leetcode-solutions/tree/main/0865-smallest-subtree-with-all-the-deepest-nodes/) | Medium |
+| [0992-subarrays-with-k-different-integers](https://github.com/sgc109/leetcode-solutions/tree/main/0992-subarrays-with-k-different-integers/) | Hard |
 | [1296-divide-array-in-sets-of-k-consecutive-numbers](https://github.com/sgc109/leetcode-solutions/tree/main/1296-divide-array-in-sets-of-k-consecutive-numbers/) | Medium |
 ## Tree
 | Problem Name | Difficulty |
@@ -32,6 +33,7 @@ Collection of LeetCode questions to ace the coding interview! - Created using [L
 | ------- | ------- |
 | [0659-split-array-into-consecutive-subsequences](https://github.com/sgc109/leetcode-solutions/tree/main/0659-split-array-into-consecutive-subsequences/) | Medium |
 | [0990-satisfiability-of-equality-equations](https://github.com/sgc109/leetcode-solutions/tree/main/0990-satisfiability-of-equality-equations/) | Medium |
+| [0992-subarrays-with-k-different-integers](https://github.com/sgc109/leetcode-solutions/tree/main/0992-subarrays-with-k-different-integers/) | Hard |
 | [1296-divide-array-in-sets-of-k-consecutive-numbers](https://github.com/sgc109/leetcode-solutions/tree/main/1296-divide-array-in-sets-of-k-consecutive-numbers/) | Medium |
 ## String
 | Problem Name | Difficulty |
@@ -58,4 +60,12 @@ Collection of LeetCode questions to ace the coding interview! - Created using [L
 | Problem Name | Difficulty |
 | ------- | ------- |
 | [0659-split-array-into-consecutive-subsequences](https://github.com/sgc109/leetcode-solutions/tree/main/0659-split-array-into-consecutive-subsequences/) | Medium |
+## Sliding Window
+| Problem Name | Difficulty |
+| ------- | ------- |
+| [0992-subarrays-with-k-different-integers](https://github.com/sgc109/leetcode-solutions/tree/main/0992-subarrays-with-k-different-integers/) | Hard |
+## Counting
+| Problem Name | Difficulty |
+| ------- | ------- |
+| [0992-subarrays-with-k-different-integers](https://github.com/sgc109/leetcode-solutions/tree/main/0992-subarrays-with-k-different-integers/) | Hard |
 <!---LeetCode Topics End-->

@@ -1,57 +1,29 @@
 class Solution {
+    int topCount[7];
+    int bottomCount[7];
+    int can[7];
 public:
     int minDominoRotations(vector<int>& tops, vector<int>& bottoms) {
-        bool isFirstTopCommon = true;
-        bool isFirstBottomCommon = true;
-
+        can[tops[0]] = 1;
+        can[bottoms[0]] = 1;
         int N = tops.size();
-
-        int cntFirstTop = 1;
-        int cntFirstBottom = 1;
-
-        for(int i = 1; i < N; ++i) {
-            if(tops[i] != tops[0] && bottoms[i] != tops[0]) {
-                isFirstTopCommon = false;
+        for(int i = 0; i < N; ++i) {
+            topCount[tops[i]]++;
+            bottomCount[bottoms[i]]++;
+            if(tops[0] != tops[i] && tops[0] != bottoms[i]) {
+                can[tops[0]] = 0;
             }
-
-            if(bottoms[i] != bottoms[0] && tops[i] != bottoms[0]){
-                isFirstBottomCommon = false;
+            if(bottoms[0] != tops[i] && bottoms[0] != bottoms[i]) {
+                can[bottoms[0]] = 0;
             }
         }
-
-        if(!isFirstTopCommon && !isFirstBottomCommon) {
-            return -1;
-        }
-
         int ans = 20001;
-        if(isFirstTopCommon) {
-            int up = 0;
-            int down = 1;
-            for(int i = 1; i < N; ++i) {
-                if(tops[0] != tops[i]) {
-                    ++up;
-                }
-                if(tops[0] != bottoms[i]) {
-                    ++down;
-                }
+        for(int i = 1; i <= 6; ++i) {
+            if(can[i]) {
+                ans = min({ans, N - topCount[i], N - bottomCount[i]});
             }
-            ans = min(up, down);
         }
 
-        if(isFirstBottomCommon) {
-            int up = 1;
-            int down = 0;
-            for(int i = 1; i < N; ++i) {
-                if(bottoms[0] != bottoms[i]) {
-                    ++down;
-                }
-                if(bottoms[0] != tops[i]) {
-                    ++up;
-                }
-            }
-            ans = min({ans, up, down});
-        }
-
-        return ans;
+        return ans == 20001 ? -1 : ans;
     }
 };

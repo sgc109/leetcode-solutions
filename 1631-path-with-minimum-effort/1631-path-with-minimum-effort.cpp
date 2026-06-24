@@ -1,7 +1,7 @@
 class Solution {
     int dr[4] = {-1, 0, 1, 0};
     int dc[4] = {0, 1, 0, -1};
-    vector<vector<bool>> visited;
+    int visited[101][101];
     vector<vector<int>> heights;
     int R, C;
     bool inRange(int r, int c) {
@@ -34,8 +34,8 @@ public:
         int hi = 1e6 + 1;
         while(lo < hi) {
             int mid = (lo + hi) / 2;
-            this->visited = vector<vector<bool>>(R, vector<bool>(C, false));
-            visited[0][0] = true;
+            memset(visited, 0, sizeof(visited));
+            visited[0][0] = 1;
             bool reachable = dfs(0, 0, mid);
             if(reachable) {
                 hi = mid;

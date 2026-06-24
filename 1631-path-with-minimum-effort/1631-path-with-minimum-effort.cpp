@@ -2,12 +2,11 @@ class Solution {
     int dr[4] = {-1, 0, 1, 0};
     int dc[4] = {0, 1, 0, -1};
     int visited[101][101];
-    vector<vector<int>> heights;
     int R, C;
     bool inRange(int r, int c) {
         return 0 <= r && r < R && 0 <= c && c < C;
     }
-    bool dfs(int r, int c, int cap) {
+    bool dfs(int r, int c, int cap, vector<vector<int>>& heights) {
         if(r == R - 1 && c == C - 1) {
             return true;
         }
@@ -18,7 +17,7 @@ class Solution {
                 continue;
             }
             visited[nr][nc] = true;
-            bool ans = dfs(nr, nc, cap);
+            bool ans = dfs(nr, nc, cap, heights);
             if(ans) {
                 return true;
             }
@@ -29,14 +28,13 @@ public:
     int minimumEffortPath(vector<vector<int>>& heights) {
         this->R = heights.size();
         this->C = heights[0].size();
-        this->heights = heights;
         int lo = 0;
         int hi = 1e6 + 1;
         while(lo < hi) {
             int mid = (lo + hi) / 2;
             memset(visited, 0, sizeof(visited));
             visited[0][0] = 1;
-            bool reachable = dfs(0, 0, mid);
+            bool reachable = dfs(0, 0, mid, heights);
             if(reachable) {
                 hi = mid;
             } else {

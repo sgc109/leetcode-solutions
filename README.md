@@ -43,6 +43,7 @@ Collection of LeetCode questions to ace the coding interview! - Created using [L
 | [1605-find-valid-matrix-given-row-and-column-sums](https://github.com/sgc109/leetcode-solutions/tree/main/1605-find-valid-matrix-given-row-and-column-sums/) | Medium |
 | [1631-path-with-minimum-effort](https://github.com/sgc109/leetcode-solutions/tree/main/1631-path-with-minimum-effort/) | Medium |
 | [2007-find-original-array-from-doubled-array](https://github.com/sgc109/leetcode-solutions/tree/main/2007-find-original-array-from-doubled-array/) | Medium |
+| [2187-minimum-time-to-complete-trips](https://github.com/sgc109/leetcode-solutions/tree/main/2187-minimum-time-to-complete-trips/) | Medium |
 ## String
 | Problem Name | Difficulty |
 | ------- | ------- |
@@ -86,6 +87,7 @@ Collection of LeetCode questions to ace the coding interview! - Created using [L
 | Problem Name | Difficulty |
 | ------- | ------- |
 | [1631-path-with-minimum-effort](https://github.com/sgc109/leetcode-solutions/tree/main/1631-path-with-minimum-effort/) | Medium |
+| [2187-minimum-time-to-complete-trips](https://github.com/sgc109/leetcode-solutions/tree/main/2187-minimum-time-to-complete-trips/) | Medium |
 ## Matrix
 | Problem Name | Difficulty |
 | ------- | ------- |

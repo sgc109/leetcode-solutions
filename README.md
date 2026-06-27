@@ -39,6 +39,7 @@ Collection of LeetCode questions to ace the coding interview! - Created using [L
 | [1007-minimum-domino-rotations-for-equal-row](https://github.com/sgc109/leetcode-solutions/tree/main/1007-minimum-domino-rotations-for-equal-row/) | Medium |
 | [1105-filling-bookcase-shelves](https://github.com/sgc109/leetcode-solutions/tree/main/1105-filling-bookcase-shelves/) | Medium |
 | [1296-divide-array-in-sets-of-k-consecutive-numbers](https://github.com/sgc109/leetcode-solutions/tree/main/1296-divide-array-in-sets-of-k-consecutive-numbers/) | Medium |
+| [1605-find-valid-matrix-given-row-and-column-sums](https://github.com/sgc109/leetcode-solutions/tree/main/1605-find-valid-matrix-given-row-and-column-sums/) | Medium |
 | [1631-path-with-minimum-effort](https://github.com/sgc109/leetcode-solutions/tree/main/1631-path-with-minimum-effort/) | Medium |
 ## String
 | Problem Name | Difficulty |
@@ -59,6 +60,7 @@ Collection of LeetCode questions to ace the coding interview! - Created using [L
 | [0659-split-array-into-consecutive-subsequences](https://github.com/sgc109/leetcode-solutions/tree/main/0659-split-array-into-consecutive-subsequences/) | Medium |
 | [1007-minimum-domino-rotations-for-equal-row](https://github.com/sgc109/leetcode-solutions/tree/main/1007-minimum-domino-rotations-for-equal-row/) | Medium |
 | [1296-divide-array-in-sets-of-k-consecutive-numbers](https://github.com/sgc109/leetcode-solutions/tree/main/1296-divide-array-in-sets-of-k-consecutive-numbers/) | Medium |
+| [1605-find-valid-matrix-given-row-and-column-sums](https://github.com/sgc109/leetcode-solutions/tree/main/1605-find-valid-matrix-given-row-and-column-sums/) | Medium |
 ## Sorting
 | Problem Name | Difficulty |
 | ------- | ------- |
@@ -83,6 +85,7 @@ Collection of LeetCode questions to ace the coding interview! - Created using [L
 ## Matrix
 | Problem Name | Difficulty |
 | ------- | ------- |
+| [1605-find-valid-matrix-given-row-and-column-sums](https://github.com/sgc109/leetcode-solutions/tree/main/1605-find-valid-matrix-given-row-and-column-sums/) | Medium |
 | [1631-path-with-minimum-effort](https://github.com/sgc109/leetcode-solutions/tree/main/1631-path-with-minimum-effort/) | Medium |
 ## Dynamic Programming
 | Problem Name | Difficulty |
